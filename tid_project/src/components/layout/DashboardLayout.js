@@ -1,12 +1,16 @@
 import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
+import ProfileBar from './ProfileBar';
+import NavigationBar from './NavigationBar';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <nav className="bg-gray-800 text-white p-4">
+    <div>
+    <NavigationBar />
+    <div className="min-h-screen flex flex-col bg-primary mr-[60px]">
+      <nav className="bg-primary text-black p-4">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Dashboard</h1>
           <div className="space-x-4">
@@ -23,9 +27,11 @@ const DashboardLayout = () => {
           </div>
         </div>
       </nav>
-      <main className="flex-1 container mx-auto p-4">
+      <ProfileBar />
+      <main className="flex-1 container m-5 p-2 rounded-lg mr-[60px]">
         <Outlet />
       </main>
+    </div>
     </div>
   );
 };
