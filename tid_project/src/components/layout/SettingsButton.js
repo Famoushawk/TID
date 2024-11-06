@@ -1,8 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function SettingsButton(){
+function SettingsButton() {
+    const navigate = useNavigate();
+
     return (
-        <button className="flex flex-col max-w-[40px] m-4">
+        <button 
+            onClick={() => navigate('/settings')} 
+            className="flex flex-col max-w-[40px] m-4"
+        >
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/5f40718e6da41294f035e41818bdec52408146f5125a6b7fa2b8ab2221e89006?placeholderIfAbsent=true&apiKey=d8134f90761a4e9db589863aef8c0d7c"
@@ -10,7 +16,7 @@ function SettingsButton(){
             alt="Settings icon"
           />
         </button>
-      );
+    );
 }
 
 export default SettingsButton;
