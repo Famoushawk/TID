@@ -1,10 +1,22 @@
 import React from 'react';
+import Parse from 'parse';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
 
+
 const DashboardLayout = () => {
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await Parse.User.logOut();
+      localStorage.removeItem('sessionToken');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
   return (
     <div>
@@ -19,11 +31,11 @@ const DashboardLayout = () => {
             <Link to="/frame3" className="hover:text-gray-300">Frame 3</Link>
             <Link to="/frame4" className="hover:text-gray-300">Frame 4</Link>
             <button 
-              onClick={() => navigate('/login')} 
-              className="hover:text-gray-300"
-            >
-              Logout
-            </button>
+  onClick={handleLogout} 
+  className="hover:text-gray-300"
+>
+  Logout
+</button>
           </div>
         </div>
       </nav>
