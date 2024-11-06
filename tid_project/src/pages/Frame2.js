@@ -5,7 +5,7 @@ const Frame2 = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Frame 2</h2>
-      <p>Micha (frame 3 in Figma)</p>
+      <p>Michaela Ziskova (frame 3 in Figma)</p>
     </div>
   );
 };
