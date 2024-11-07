@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Parse from 'parse';
+import {
+  SettingsContainer,
+  PageTitle,
+  MessageBox,
+  Card,
+  SectionTitle,
+  FormGroup,
+  Label,
+  Input,
+  HelpText,
+  Button
+} from './Settings.styles';
 
 const Settings = () => {
   const [user, setUser] = useState({
@@ -12,7 +24,7 @@ const Settings = () => {
     confirm: ''
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ text: '', type: '' }); // type can be 'success' or 'error'
+  const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -75,98 +87,88 @@ const Settings = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">User Settings</h1>
+    <SettingsContainer>
+      <PageTitle>User Settings</PageTitle>
       
       {message.text && (
-        <div className={`mb-4 p-3 rounded ${
-          message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-        }`}>
+        <MessageBox type={message.type}>
           {message.text}
-        </div>
+        </MessageBox>
       )}
 
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Profile Information</h2>
+      <Card>
+        <SectionTitle>Profile Information</SectionTitle>
         <form onSubmit={handleUpdateProfile}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Username</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
               type="text"
-              className="w-full p-2 border rounded bg-gray-100"
               value={user.username}
               disabled
             />
-            <p className="text-sm text-gray-500 mt-1">Username cannot be changed</p>
-          </div>
+            <HelpText>Username cannot be changed</HelpText>
+          </FormGroup>
           
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2">Email</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
               type="email"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
               value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               disabled={loading}
             />
-          </div>
+          </FormGroup>
 
-          <button
-            type="submit"
-            className="bg-primary text-black px-4 py-2 rounded hover:bg-secondary disabled:opacity-50 transition-colors"
-            disabled={loading}
-          >
+          <Button type="submit" disabled={loading}>
             {loading ? 'Updating...' : 'Update Profile'}
-          </button>
+          </Button>
         </form>
-      </div>
+      </Card>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Change Password</h2>
+      <Card>
+        <SectionTitle>Change Password</SectionTitle>
         <form onSubmit={handleChangePassword}>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Current Password</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="currentPassword">Current Password</Label>
+            <Input
+              id="currentPassword"
               type="password"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
               value={newPassword.current}
               onChange={(e) => setNewPassword({ ...newPassword, current: e.target.value })}
               disabled={loading}
             />
-          </div>
+          </FormGroup>
           
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">New Password</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="newPassword">New Password</Label>
+            <Input
+              id="newPassword"
               type="password"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
               value={newPassword.new}
               onChange={(e) => setNewPassword({ ...newPassword, new: e.target.value })}
               disabled={loading}
             />
-          </div>
+          </FormGroup>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 mb-2">Confirm New Password</label>
-            <input
+          <FormGroup>
+            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+            <Input
+              id="confirmPassword"
               type="password"
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
               value={newPassword.confirm}
               onChange={(e) => setNewPassword({ ...newPassword, confirm: e.target.value })}
               disabled={loading}
             />
-          </div>
+          </FormGroup>
 
-          <button
-            type="submit"
-            className="bg-primary text-black px-4 py-2 rounded hover:bg-secondary disabled:opacity-50 transition-colors"
-            disabled={loading}
-          >
+          <Button type="submit" disabled={loading}>
             {loading ? 'Changing...' : 'Change Password'}
-          </button>
+          </Button>
         </form>
-      </div>
-    </div>
+      </Card>
+    </SettingsContainer>
   );
 };
 

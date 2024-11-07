@@ -10,7 +10,7 @@ import Frame2 from './pages/Frame2';
 import Frame3 from './pages/Frame3/Frame3';
 import Frame4 from './pages/Frame4';
 import Login from './pages/Login/Login';
-import Settings from './pages/Settings';
+import Settings from './pages/Settings/Settings';
 
 
 // Move checkUser outside of App component so other components can access it
