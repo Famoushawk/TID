@@ -6,19 +6,16 @@ import ProfileOptions from "./ProfileOptions";
 const profileData = [
   {
     title: "Budget Templates",
-    details: "25.000 $$",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './wallet.png'
   },
   {
     title: "Set goal for saving up",
-    details: "4000 $$ left",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './calculator.png'
   },
   {
     title: "Diagram of expenses",
-    details: "20% complete",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './target.png'
   }
