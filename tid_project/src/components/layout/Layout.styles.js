@@ -68,7 +68,7 @@ export const BurgerButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 48px;
+  width: 52px;
   min-height: 48px;
   border: none;
   background: none;
@@ -103,7 +103,7 @@ export const AddButtonContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56px;
+  width: 50px;
   height: 50px;
   border-radius: ${({ theme }) => theme.borderRadius['2xl']};
   background-color: ${({ theme }) => theme.colors.secondary};
