@@ -103,7 +103,7 @@ export const AddButtonContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50px;
+  width: 56px;
   height: 50px;
   border-radius: ${({ theme }) => theme.borderRadius['2xl']};
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -122,4 +122,18 @@ export const IconWrapper = styled.div`
   align-items: center;
   padding: ${({ theme }) => theme.spacing[4]};
   width: 56px;
+`;
+
+//White background for all frames
+export const WhiteBackground = styled.section`
+  border-radius: 28px;
+  background: ${({ theme }) => theme.colors.white};
+  display: flex;
+  margin-top: 14px;
+  height: 652px;
+  width: 100%;
+  flex-direction: column;
+  @media (max-width: 991px) {
+    max-width: 100%;
+  }
 `;
