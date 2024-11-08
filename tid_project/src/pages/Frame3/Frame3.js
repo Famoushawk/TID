@@ -1,16 +1,14 @@
 import React from 'react';
 import FiltersLine from './FiltersLine';
 import CardGrid from './CardGrid';
-
+import { WhiteBackground } from '../../components/layout/Layout.styles';
 
 const Frame3 = () => {
   return (
-    <div className='flex'>
-      <div className='flex-grow p-4 mr-[20px] bg-white rounded-lg'>
+      <WhiteBackground>
       <FiltersLine />
       <CardGrid />
-      </div>
-    </div> 
+      </WhiteBackground>
   );
 };
 

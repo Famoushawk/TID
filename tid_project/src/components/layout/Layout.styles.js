@@ -123,3 +123,19 @@ export const IconWrapper = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
   width: 56px;
 `;
+
+//White background for all frames
+export const WhiteBackground = styled.article`
+  border-radius: 20px;
+  background: ${({ theme }) => theme.colors.white};
+  display: flex;
+  min-height: 570px;
+  flex-direction: column;
+  justify-content: start;
+  flex-grow: 1;
+  flex-basis: 0;
+  width: fit-content;
+  @media (max-width: 991px) {
+    max-width: 100%;
+  }
+  `;

@@ -1,5 +1,7 @@
 function FiltersLine(){
     const filters = ['Blogs', 'Debate', 'Videos'];
+
+    //Create a function to filter the values such that only blogs show when blogs are clicked
   
     return (
       <nav className="flex overflow-hidden flex-wrap gap-1 items-start pb-3 w-full text-sm font-medium tracking-normal leading-5 text-center text-zinc-700 max-md:px-5 max-md:max-w-full bg-white">
