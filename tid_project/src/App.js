@@ -6,14 +6,13 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import Parse from 'parse';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
-import Frame2 from './pages/Frame2';
+import Frame2 from './pages/Frame2/Frame2';
 import Frame3 from './pages/Frame3/Frame3';
 import Frame4 from './pages/Frame4';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 
 
-// Move checkUser outside of App component so other components can access it
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
   if (sessionToken) {
@@ -28,7 +27,6 @@ const checkUser = async () => {
   return false;
 };
 
-// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const location = useLocation();
@@ -42,7 +40,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Or your loading component
+    return <div>Loading...</div>; 
   }
 
   if (!isAuthenticated) {
@@ -52,7 +50,6 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Public Route Component (prevents authenticated users from accessing login)
 const PublicRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
@@ -65,7 +62,7 @@ const PublicRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Or your loading component
+    return <div>Loading...</div>; 
   }
 
   if (isAuthenticated) {
