@@ -5,22 +5,22 @@ import ProfileOptions from "./ProfileOptions";
 
 const profileData = [
   {
-    title: "Current status",
+    title: "Budget Templates",
     details: "25.000 $$",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './wallet.png'
   },
   {
-    title: "Expense Tracker",
+    title: "Set goal for saving up",
     details: "4000 $$ left",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: './target.png'
+    imageUrl: './calculator.png'
   },
   {
-    title: "Financial Goals",
+    title: "Diagram of expenses",
     details: "20% complete",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: './calculator.png'
+    imageUrl: './target.png'
   }
 ];
 
