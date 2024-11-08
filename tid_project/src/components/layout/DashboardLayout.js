@@ -1,37 +1,54 @@
 import React from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import Parse from 'parse';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
+import {
+  DashboardContainer,
+  NavBar,
+  NavContent,
+  NavTitle,
+  NavLinks,
+  StyledNavLink,
+  MainContent
+} from './Layout.styles';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    try {
+      await Parse.User.logOut();
+      localStorage.removeItem('sessionToken');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <div>
-    <NavigationBar />
-    <div className="min-h-screen flex flex-col bg-primary mr-[60px]">
-      <nav className="bg-primary text-black p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">Dashboard</h1>
-          <div className="space-x-4">
-            <Link to="/frame1" className="hover:text-gray-300">Frame 1</Link>
-            <Link to="/frame2" className="hover:text-gray-300">Frame 2</Link>
-            <Link to="/frame3" className="hover:text-gray-300">Frame 3</Link>
-            <Link to="/frame4" className="hover:text-gray-300">Frame 4</Link>
-            <button 
-              onClick={() => navigate('/login')} 
-              className="hover:text-gray-300"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
-      <ProfileBar />
-      <main className="flex-1 container m-5 p-2 rounded-lg mr-[60px]">
-        <Outlet />
-      </main>
-    </div>
+      <NavigationBar />
+      <DashboardContainer>
+        <NavBar>
+          <NavContent>
+            <NavTitle>Dashboard</NavTitle>
+            <NavLinks>
+              <Link to="/Budget" component={StyledNavLink}>Frame 1</Link>
+              <Link to="/frame2" component={StyledNavLink}>Frame 2</Link>
+              <Link to="/Social" component={StyledNavLink}>Frame 3</Link>
+              <Link to="/Blog" component={StyledNavLink}>Frame 4</Link>
+              <StyledNavLink as="button" onClick={handleLogout}>
+                Logout
+              </StyledNavLink>
+            </NavLinks>
+          </NavContent>
+        </NavBar>
+        <ProfileBar />
+        <MainContent>
+          <Outlet />
+        </MainContent>
+      </DashboardContainer>
     </div>
   );
 };

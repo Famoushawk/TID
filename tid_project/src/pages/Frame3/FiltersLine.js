@@ -1,18 +1,56 @@
-function FiltersLine(){
-    const filters = ['Blogs', 'Debate', 'Videos'];
-  
-    return (
-      <nav className="flex overflow-hidden flex-wrap gap-1 items-start pb-3 w-full text-sm font-medium tracking-normal leading-5 text-center text-zinc-700 max-md:px-5 max-md:max-w-full bg-white">
-        {filters.map((filter, index) => (
-          <button key={index} 
-          className="flex overflow-hidden justify-center items-center whitespace-nowrap rounded-lg border border-solid border-stone-300 min-h-[32px] bg-white">
-            <div className="gap-2 self-stretch px-4 py-1.5 my-auto min-h-[32px] bg-white hover:bg-gray-300">
-            {filter} 
-            </div>
-          </button>
-        ))}
-      </nav>
-    )
-  }
+import React from "react";
+import styled from "styled-components";
 
-  export default FiltersLine;
+const filterOptions = ["Blogs", "Debate", "Videos"];
+
+function FiltersLine() {
+  return (
+    <FilterContainer>
+      {filterOptions.map((option, index) => (
+        <FilterButton key={index}>
+          <ButtonContent>{option}</ButtonContent>
+        </FilterButton>
+      ))}
+    </FilterContainer>
+  );
+}
+
+const FilterContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: start;
+  gap: 4px;
+  overflow: hidden;
+  color: #49454f;
+  text-align: center;
+  letter-spacing: 0.1px;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+  font: 500 14px/20px Roboto, sans-serif;
+  @media (max-width: 991px) {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+`;
+
+const FilterButton = styled.button`
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #cac4d0;
+  display: flex;
+  min-height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+  background: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #d1d5db;
+  }
+`;
+
+const ButtonContent = styled.span`
+  padding: 6px 16px;
+`;
+
+export default FiltersLine;
