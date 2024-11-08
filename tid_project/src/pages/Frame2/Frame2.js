@@ -35,7 +35,7 @@ const Frame2 = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Frame 2 - Goal Setting</h2>
-      <p className="mb-4">Michaela Ziskova (frame 3 in Figma)</p>
+
       
       {/* Input and Add Button for Goals */}
       <div className="mb-4">
