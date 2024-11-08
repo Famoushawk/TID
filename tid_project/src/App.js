@@ -5,7 +5,7 @@ import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import Parse from 'parse';
 import DashboardLayout from './components/layout/DashboardLayout';
-import Frame1 from './pages/Frame1';
+import Frame1 from './pages/Frame1/Frame1';
 import Frame2 from './pages/Frame2';
 import Frame3 from './pages/Frame3/Frame3';
 import Frame4 from './pages/Frame4';
