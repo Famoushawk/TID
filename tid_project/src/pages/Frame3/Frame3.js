@@ -1,13 +1,13 @@
 import React from 'react';
-import FiltersLine from './FiltersLine';
-import CardGrid from './CardGrid';
 import { WhiteBackground } from '../../components/layout/Layout.styles';
+import FiltersLine from "./FiltersLine";
+import CardGrid from "./Card";
 
 const Frame3 = () => {
   return (
       <WhiteBackground>
-      <FiltersLine />
-      <CardGrid />
+        <FiltersLine />
+        <CardGrid />
       </WhiteBackground>
   );
 };

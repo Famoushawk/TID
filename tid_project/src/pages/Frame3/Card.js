@@ -1,19 +1,102 @@
 import React from "react";
+import styled from "styled-components";
 
-function Card({type, date}){
-    return (
-    <button className="flex flex-col flex-1 shrink whitespace-nowrap basis-0 max-w-[220px] min-h-[160px] min-w-[120px] hover:bg-gray-300 rounded">
-      <img loading="lazy" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtjx5nRnRUiIM-RtBAaIXxC8obxkAbwuSxug&s" alt="" className="object-contain rounded-2xl aspect-[1.12] w-[134px] p-1" />
-      <div className="flex flex-col mt-1 w-full">
-        <h3 className="text-sm font-medium tracking-normal leading-5 text-ellipsis text-zinc-900">
-          {type}
-        </h3>
-        <time className="text-xs tracking-wide leading-4 text-ellipsis text-zinc-700">
-          {date}
-        </time>
-      </div>
-    </button>
-    )
+const cardData = [
+  { title: "Blog post", date: "Updated today", type: "blog" },
+  { title: "Video", date: "Updated yesterday", type: "video" },
+  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
+  { title: "Video", date: "Updated today", type: "video" },
+  { title: "Debate", date: "Updated yesterday", type: "debate" },
+  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
+  { title: "Blog post", date: "Updated today", type: "blog" },
+  { title: "Video", date: "Updated yesterday", type: "video" },
+  { title: "Video", date: "Updated 2 days ago", type: "video" },
+  { title: "Blog post", date: "Updated today", type: "blog" },
+  { title: "Blog post", date: "Updated today", type: "blog" },
+  { title: "Video", date: "Updated yesterday", type: "video" },
+  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
+  { title: "Video", date: "Updated today", type: "video" },
+  { title: "Debate", date: "Updated yesterday", type: "debate" },
+  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
+  { title: "Blog post", date: "Updated today", type: "blog" },
+  { title: "Video", date: "Updated yesterday", type: "video" },
+  { title: "Video", date: "Updated 2 days ago", type: "video" },
+  { title: "Debate", date: "Updated yesterday", type: "debate" },
+  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
+];
+
+function CardGrid() {
+  return (
+    <GridContainer>
+      {cardData.map((card, index) => (
+        <Card key={index}>
+          <CardImage src="https://cdn.builder.io/api/v1/image/assets/TEMP/2d23df4276f92df3f4c284ccb58821f758e6ad1938c526deb3aedd30f0d776ad?placeholderIfAbsent=true&apiKey=d8134f90761a4e9db589863aef8c0d7c" alt={card.title} />
+          <CardContent>
+            <CardTitle>{card.title}</CardTitle>
+            <CardDate>{card.date}</CardDate>
+          </CardContent>
+        </Card>
+      ))}
+    </GridContainer>
+  );
 }
 
-export default Card;
+const GridContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: start;
+  gap: 16px 24px;
+  justify-content: start;
+  flex-wrap: wrap;
+  padding: 0 24px 32px;
+  @media (max-width: 991px) {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+`;
+
+const Card = styled.article`
+  display: flex;
+  min-width: 120px;
+  min-height: 160px;
+  max-width: 220px;
+  flex-direction: column;
+  flex: 1;
+  flex-basis: 0%;
+`;
+
+const CardImage = styled.img`
+  aspect-ratio: 1.12;
+  object-fit: contain;
+  width: 134px;
+  border-radius: 16px;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  margin-top: 4px;
+  width: 100%;
+  flex-direction: column;
+  &:hover {
+    background-color: #d1d5db;
+  }
+`;
+
+const CardTitle = styled.h3`
+  color: #1d1b20;
+  text-overflow: ellipsis;
+  letter-spacing: 0.1px;
+  font: 500 14px/20px Roboto, sans-serif;
+  margin: 0;
+`;
+
+const CardDate = styled.p`
+  color: #49454f;
+  text-overflow: ellipsis;
+  letter-spacing: 0.4px;
+  font: 400 12px/16px Roboto, sans-serif;
+  margin: 0;
+`;
+
+
+export default CardGrid;
