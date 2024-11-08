@@ -34,10 +34,10 @@ const DashboardLayout = () => {
           <NavContent>
             <NavTitle>Dashboard</NavTitle>
             <NavLinks>
-              <Link to="/Budget" component={StyledNavLink}>Frame 1</Link>
+              <Link to="/frame1" component={StyledNavLink}>Frame 1</Link>
               <Link to="/frame2" component={StyledNavLink}>Frame 2</Link>
-              <Link to="/Social" component={StyledNavLink}>Frame 3</Link>
-              <Link to="/Blog" component={StyledNavLink}>Frame 4</Link>
+              <Link to="/frame3" component={StyledNavLink}>Frame 3</Link>
+              <Link to="/frame4" component={StyledNavLink}>Frame 4</Link>
               <StyledNavLink as="button" onClick={handleLogout}>
                 Logout
               </StyledNavLink>
