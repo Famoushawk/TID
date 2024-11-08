@@ -129,10 +129,10 @@ export const WhiteBackground = styled.section`
   border-radius: 28px;
   background: ${({ theme }) => theme.colors.white};
   display: flex;
-  margin-top: 14px;
-  height: 652px;
+  margin-top: 10px;
   width: 100%;
   flex-direction: column;
+  min-height: 100px;
   @media (max-width: 991px) {
     max-width: 100%;
   }

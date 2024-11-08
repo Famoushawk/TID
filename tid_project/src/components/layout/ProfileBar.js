@@ -6,9 +6,9 @@ const ProfileSection = styled.section`
   display: flex;
   gap: ${({ theme }) => theme.spacing[2]};
   align-self: flex-start;
-  padding: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[2]};
   background-color: ${({ theme }) => theme.colors.primary};
-  margin-left: ${({ theme }) => theme.spacing[1]};
+  margin-left: ${({ theme }) => theme.spacing[4]};
 `;
 
 const ProfileImage = styled.img`
