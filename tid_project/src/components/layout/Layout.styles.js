@@ -68,7 +68,7 @@ export const BurgerButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 48px;
+  width: 52px;
   min-height: 48px;
   border: none;
   background: none;
