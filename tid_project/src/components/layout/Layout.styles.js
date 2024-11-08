@@ -103,7 +103,7 @@ export const AddButtonContainer = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56px;
+  width: 50px;
   height: 50px;
   border-radius: ${({ theme }) => theme.borderRadius['2xl']};
   background-color: ${({ theme }) => theme.colors.secondary};
