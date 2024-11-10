@@ -12,6 +12,7 @@ import Frame4 from './pages/Frame4';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 
+// Comment for github pull-request
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
