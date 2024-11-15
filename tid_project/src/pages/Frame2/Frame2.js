@@ -1,5 +1,6 @@
-
 import React, { useState } from 'react';
+import Menu from './Menu';
+import { WhiteBackground } from '../../components/layout/Layout.styles';
 
 const Frame2 = () => {
   const [goal, setGoal] = useState('');
@@ -34,10 +35,11 @@ const Frame2 = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Frame 2 - Goal Setting</h2>
-      <p className="mb-4">Michaela Ziskova (frame 3 in Figma)</p>
-      
-      {/* Input and Add Button for Goals */}
+      <WhiteBackground>
+      <Menu/>
+    </WhiteBackground>
+   
+   {/* Input and Add Button for Goals */}
       <div className="mb-4">
         <input
           type="text"
