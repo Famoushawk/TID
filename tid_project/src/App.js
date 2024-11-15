@@ -8,7 +8,7 @@ import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
 import Frame2 from './pages/Frame2/Frame2';
 import Frame3 from './pages/Frame3/Frame3';
-import Frame4 from './pages/Frame4';
+import Frame4 from './pages/Frame4/Frame4';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 
