@@ -1,34 +1,30 @@
 import React from "react";
-import ProfileOptions from "../../components/layout/ProfileOptions.js";
 import styled from "styled-components";
+import ProfileOptions from "../../components/layout/ProfileOptions.js";
 
 
-
-const profileData = [
+const menuData = [
   {
-    title: "Current status",
-    details: "25.000 $$",
+    title: "Budget templates",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './wallet.png'
   },
   {
-    title: "Expense Tracker",
-    details: "4000 $$ left",
+    title: "Set goal for saving up",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './target.png'
   },
   {
-    title: "Financial Goals",
-    details: "20% complete",
+    title: "Diagram of Expenses",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
     imageUrl: './calculator.png'
   }
 ];
 
-const Profile = () => {
+const Menu = () => {
   return (
     <ListContainer>
-      {profileData.map((item, index) => (
+      {menuData.map((item, index) => (
         <ProfileOptions key={index} {...item} />
       ))}
     </ListContainer>
@@ -48,4 +44,4 @@ const ListContainer = styled.ul`
   }
 `;
 
-export default Profile;
+export default Menu;
