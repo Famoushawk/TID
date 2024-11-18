@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProfileOptions = ({ title, details, description, imageUrl }) => {
+const ProfileOptions = ({ title, description, imageUrl, onClick }) => {
   return (
     <ListOptions>
-      <StateLayer>
+      <StateLayer onClick={onClick}>
         <LeadingElement>
           <ImageWrapper>
-            <Icon src={imageUrl} alt="" />
+            <Icon src={imageUrl} alt={`${title} icon`} />
           </ImageWrapper>
         </LeadingElement>
         <Content>
@@ -30,6 +30,8 @@ const ListOptions = styled.li`
   width: 100%;
   flex-direction: column;
   justify-content: start;
+  cursor: pointer;
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -47,6 +49,11 @@ const StateLayer = styled.button`
   background: none; 
   border: none; 
   cursor: pointer;
+
+  &:hover {
+    background: #f0f0f0; /* Light background on hover */
+  }
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -82,6 +89,7 @@ const Content = styled.div`
   justify-content: start;
   flex: 1;
   flex-basis: 0%;
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -95,9 +103,12 @@ const HeadlineAndReviews = styled.h2`
   flex: 1;
   width: 100%;
   gap: 8px;
-  color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1d1b20));
-  letter-spacing: var(--Title-Large-Tracking, 0px);
-  font: var(--Title-Large-Size, 22px) / var(--Title-Large-Line-Height, 28px) var(--Title-Large-Font, Roboto);
+  color: #1d1b20; /* Text color */
+  letter-spacing: 0px;
+  font-size: 22px;
+  line-height: 28px;
+  font-family: Roboto, sans-serif;
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -108,23 +119,12 @@ const SupportingText = styled.div`
   margin-top: 8px;
   width: 100%;
   flex-direction: column;
-  color: var(
-    --M3-sys-light-on-surface-variant,
-    var(--Schemes-On-Surface-Variant, #49454f)
-  );
-  letter-spacing: var(--Body-Medium-Tracking, 0.25px);
-  justify-content: start;
-  font: var(--Body-Medium-Size, 14px) / var(--Body-Medium-Line-Height, 20px) var(--Body-Medium-Font, Roboto);
-  @media (max-width: 991px) {
-    max-width: 100%;
-  }
-`;
+  color: #49454f; /* Subtle color for description text */
+  letter-spacing: 0.25px;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: Roboto, sans-serif;
 
-const Details = styled.p`
-  align-self: stretch;
-  flex: 1;
-  width: 100%;
-  gap: 4px;
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -134,32 +134,33 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
 `;
 
 const DividerWrapper = styled.div`
-  transform: rotate(8.742277657347563e-8rad);
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: center;
   padding: 0 16px;
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
 `;
 
 const Divider = styled.hr`
-  background: var(--Schemes-Outline-Variant, #cac4d0);
+  background: #cac4d0; /* Divider color */
   min-height: 1px;
   width: 100%;
   border: 1px solid rgba(202, 196, 208, 1);
+
   @media (max-width: 991px) {
     max-width: 100%;
   }
 `;
 
 export default ProfileOptions;
-
