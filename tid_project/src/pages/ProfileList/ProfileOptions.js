@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const ProfileOptions = ({ title, description, imageUrl, onClick }) => {
+  const [showGoalInput, setShowGoalInput] = useState(false);
+  const [goal, setGoal] = useState("");
+
+  const handleGoalSubmit = () => {
+    alert(`Your new goal "${goal}" has been set!`);
+    setShowGoalInput(false);
+    setGoal("");
+  };
+
+  const handleGoalChange = (e) => {
+    setGoal(e.target.value);
+  };
+
   return (
     <ListOptions>
       <StateLayer onClick={onClick}>
@@ -20,6 +33,28 @@ const ProfileOptions = ({ title, description, imageUrl, onClick }) => {
       <DividerWrapper>
         <Divider />
       </DividerWrapper>
+
+      {title === "Set a goal for saving up" && (
+        <GoalContainer>
+          {showGoalInput ? (
+            <>
+              <GoalInput
+                type="text"
+                placeholder="Please, enter your saving goal"
+                value={goal}
+                onChange={handleGoalChange}
+              />
+              <GoalButton onClick={handleGoalSubmit} disabled={!goal.trim()}>
+                Save Goal
+              </GoalButton>
+            </>
+          ) : (
+            <GoalButton onClick={() => setShowGoalInput(true)}>
+              Set up Goal
+            </GoalButton>
+          )}
+        </GoalContainer>
+      )}
     </ListOptions>
   );
 };
@@ -45,13 +80,13 @@ const StateLayer = styled.button`
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 12px 16px;
-  text-align: left; 
-  background: none; 
-  border: none; 
+  text-align: left;
+  background: none;
+  border: none;
   cursor: pointer;
 
   &:hover {
-    background: #f0f0f0; /* Light background on hover */
+    background: #f0f0f0;
   }
 
   @media (max-width: 991px) {
@@ -103,7 +138,7 @@ const HeadlineAndReviews = styled.h2`
   flex: 1;
   width: 100%;
   gap: 8px;
-  color: #1d1b20; /* Text color */
+  color: #1d1b20;
   letter-spacing: 0px;
   font-size: 22px;
   line-height: 28px;
@@ -119,7 +154,7 @@ const SupportingText = styled.div`
   margin-top: 8px;
   width: 100%;
   flex-direction: column;
-  color: #49454f; /* Subtle color for description text */
+  color: #49454f;
   letter-spacing: 0.25px;
   font-size: 14px;
   line-height: 20px;
@@ -153,13 +188,52 @@ const DividerWrapper = styled.div`
 `;
 
 const Divider = styled.hr`
-  background: #cac4d0; /* Divider color */
+  background: #cac4d0;
   min-height: 1px;
   width: 100%;
   border: 1px solid rgba(202, 196, 208, 1);
 
   @media (max-width: 991px) {
     max-width: 100%;
+  }
+`;
+
+const GoalContainer = styled.div`
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const GoalInput = styled.input`
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+`;
+
+const GoalButton = styled.button`
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
   }
 `;
 
