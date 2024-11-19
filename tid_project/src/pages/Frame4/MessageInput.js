@@ -73,7 +73,7 @@ function MessageInput() {
     try {
       setIsSubmitting(true);
       await createComment(selectedThread.id, message.trim());
-      setMessage(''); // Clear input after successful submission
+      setMessage(''); // Clearer input after successful submission
     } catch (error) {
       console.error('Error posting comment:', error);
     } finally {
