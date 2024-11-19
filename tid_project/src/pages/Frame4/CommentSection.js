@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
+import { useThread } from './ThreadContext';
+import Parse from 'parse';
 
 const CommentSectionWrapper = styled.section`
   width: 100%;
@@ -31,40 +33,80 @@ const CommentList = styled.ul`
   margin: 0;
 `;
 
-// Comments shouldn't be hardcoded 
-// Find way to import comments and profiles
-const commentData = [
-  {
-    id: 1,
-    name: "Name",
-    content: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    time: "10 min",
-    avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-  },
-  {
-    id: 2,
-    name: "Name",
-    content: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    time: "10 min",
-    avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-  },
-  {
-    id: 3,
-    name: "Name",
-    content: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    time: "10 min",
-    avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-  }
-];
-
 function CommentSection() {
+  const { selectedThread } = useThread();
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (!selectedThread) {
+        setComments([]);
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const Post = Parse.Object.extend('Post');
+        const query = new Parse.Query(Post);
+        const threadPointer = new Parse.Object('Thread');
+        threadPointer.id = selectedThread.id;
+        
+        query.equalTo('thread', threadPointer);
+        query.include('author');
+        query.ascending('createdAt');
+        const results = await query.find();
+        
+        const formattedComments = results.map(comment => ({
+          id: comment.id,
+          name: comment.get('author')?.get('username') || 'Anonymous',
+          content: comment.get('content'),
+          time: formatTimeAgo(comment.createdAt),
+          avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
+        }));
+
+        setComments(formattedComments);
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+        setComments([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [selectedThread]);
+
+  const formatTimeAgo = (date) => {
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+    
+    if (minutes < 60) return `${minutes} min ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  };
+
+  if (loading) return <div>Loading comments...</div>;
+
   return (
     <CommentSectionWrapper>
       <SectionHeader>Comments</SectionHeader>
       <CommentList>
-        {commentData.map(comment => (
-          <CommentItem key={comment.id} {...comment} />
-        ))}
+        {comments.length > 0 ? (
+          comments.map(comment => (
+            <CommentItem
+              key={comment.id}
+              {...comment}
+            />
+          ))
+        ) : (
+          <li style={{ padding: '16px', textAlign: 'center' }}>
+            No comments yet. Be the first to comment!
+          </li>
+        )}
       </CommentList>
     </CommentSectionWrapper>
   );

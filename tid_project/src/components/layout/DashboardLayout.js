@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Parse from 'parse';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
@@ -14,6 +14,7 @@ import {
 } from './Layout.styles';
 
 const DashboardLayout = () => {
+  const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -28,7 +29,7 @@ const DashboardLayout = () => {
 
   return (
     <div>
-      <NavigationBar />
+      <NavigationBar onAddButtonClick={() => setIsNewThreadDialogOpen(true)} />
       <DashboardContainer>
         <NavBar>
           <NavContent>
