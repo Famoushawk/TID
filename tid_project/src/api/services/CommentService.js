@@ -15,22 +15,35 @@ export const CommentService = {
   },
 
   async createComment(threadId, content) {
-    const data = {
-      content: content,
-      thread: {
-        __type: "Pointer",
-        className: "Thread",
-        objectId: threadId
-      },
-      ACL: {
-        "*": {
-          "read": true
+    try {
+      const userResponse = await apiClient.get('/users/me');
+      const username = userResponse.data.username;
+      const userId = userResponse.data.objectId;
+ 
+      const data = {
+        content,
+        author: username,
+        thread: {
+          __type: "Pointer", 
+          className: "Thread",
+          objectId: threadId
+        },
+        ACL: {
+          [userId]: {
+            "read": true,
+            "write": true
+          },
+          "*": {
+            "read": true
+          }
         }
-      }
-    };
-
-    console.log('Request data:', data);
-    const response = await apiClient.post(ENDPOINTS.POSTS, data);
-    return response.data;
+      };
+ 
+      const response = await apiClient.post(ENDPOINTS.POSTS, data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating comment:', error.response?.data || error);
+      throw error;
+    }
   }
-};
+ };

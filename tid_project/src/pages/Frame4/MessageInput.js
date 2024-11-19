@@ -67,7 +67,6 @@ function MessageInput() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
-    console.log('Selected Thread:', selectedThread);
     e.preventDefault();
     if (!message.trim() || !selectedThread || isSubmitting) return;
   

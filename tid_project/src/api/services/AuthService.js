@@ -3,11 +3,18 @@ import { ENDPOINTS } from '../endpoints';
 
 export const AuthService = {
   async login(username, password) {
-    const response = await apiClient.post(ENDPOINTS.LOGIN, { username, password });
-    if (response.data.sessionToken) {
-      localStorage.setItem('sessionToken', response.data.sessionToken);
+    try {
+      const response = await apiClient.post(ENDPOINTS.LOGIN, { username, password });
+      if (response.data.sessionToken) {
+        localStorage.setItem('sessionToken', response.data.sessionToken);
+      }
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data.error || 'Invalid username or password');
+      }
+      throw new Error('Login failed - please try again');
     }
-    return response.data;
   },
 
   async logout() {

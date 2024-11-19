@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
-import Parse from 'parse';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
 import Frame2 from './pages/Frame2/Frame2';
@@ -11,14 +10,13 @@ import Frame3 from './pages/Frame3/Frame3';
 import Frame4 from './pages/Frame4/Frame4';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
-
-// Comment for github pull-request
+import apiClient from './api/client';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
   if (sessionToken) {
     try {
-      await Parse.User.become(sessionToken);
+      const response = await apiClient.get('/users/me');
       return true;
     } catch (error) {
       localStorage.removeItem('sessionToken');

@@ -4,7 +4,6 @@ import Content from './Content';
 import { ThreadProvider } from './ThreadContext';
 
 const Frame4 = () => {
-  console.log('Frame4 component rendering');
   return (
     <ThreadProvider>
       <WhiteBackground>
