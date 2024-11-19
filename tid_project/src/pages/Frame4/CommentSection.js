@@ -29,20 +29,22 @@ function CommentSection() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const formatComments = (results) => {
+    return results.map(comment => ({
+      id: comment.objectId,
+      name: comment.author,
+      content: comment.content,
+      time: formatTimeAgo(comment.createdAt),
+      avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
+    }));
+  };
+
   useEffect(() => {
     const fetchComments = async () => {
       if (!selectedThread?.objectId) return;
-
       try {
         const results = await CommentService.getComments(selectedThread.objectId);
-        const formattedComments = results.map(comment => ({
-          id: comment.objectId,
-          name: comment.author,
-          content: comment.content,
-          time: formatTimeAgo(comment.createdAt),
-          avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-        }));
-        setComments(formattedComments);
+        setComments(formatComments(results));
       } catch (error) {
         console.error('Error fetching comments:', error);
       } finally {
@@ -51,10 +53,6 @@ function CommentSection() {
     };
 
     fetchComments();
-    // Set up polling for new comments
-    const pollInterval = setInterval(fetchComments, 5000);
-    
-    return () => clearInterval(pollInterval);
   }, [selectedThread, commentsUpdated]);
 
   if (loading) return <div>Loading comments...</div>;
