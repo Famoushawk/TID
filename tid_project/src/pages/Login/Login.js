@@ -1,224 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Parse from 'parse';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../../components/ui/dialog';
-import styled from 'styled-components';
-import {
-  LoginContainer,
-  LoginBox,
-  Title,
-  ErrorMessage,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-  SignUpText,
-  SignUpButton
-} from './styles';
-
-// Additional styled components for the dialog
-const DialogButtonWrapper = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing[2]};
-  width: 100%;
-`;
-
-const DialogForm = styled.form`
-  margin-top: ${({ theme }) => theme.spacing[4]};
-`;
+import { AuthService } from '../../api/services/AuthService';
 
 const Login = () => {
-  // State management
-  const [formState, setFormState] = useState({
-    login: {
-      username: '',
-      password: ''
-    },
-    signUp: {
-      username: '',
-      password: '',
-      email: ''
-    }
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Handle login form submission
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
+    setLoading(true);
+    setError('');
 
     try {
-      const user = await Parse.User.logIn(formState.login.username, formState.login.password);
-      localStorage.setItem('sessionToken', user.getSessionToken());
+      await AuthService.login(credentials.username, credentials.password);
       navigate('/frame1');
     } catch (error) {
-      setErrorMessage(error.message || 'An error occurred during login');
+      setError(error.message || 'Login failed');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  };
-
-  // Handle sign up form submission
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage('');
-
-    try {
-      const user = new Parse.User();
-      user.set("username", formState.signUp.username);
-      user.set("password", formState.signUp.password);
-      user.set("email", formState.signUp.email);
-      
-      await user.signUp();
-      localStorage.setItem('sessionToken', user.getSessionToken());
-      setIsModalOpen(false);
-      navigate('/frame1');
-    } catch (error) {
-      setErrorMessage(error.message || 'An error occurred during sign up');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Handle input changes for login form
-  const handleLoginInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormState(prev => ({
-      ...prev,
-      login: {
-        ...prev.login,
-        [name]: value
-      }
-    }));
-  };
-
-  // Handle input changes for signup form
-  const handleSignUpInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormState(prev => ({
-      ...prev,
-      signUp: {
-        ...prev.signUp,
-        [name]: value
-      }
-    }));
   };
 
   return (
-    <LoginContainer>
-      <LoginBox>
-        <Title>Login</Title>
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        
-        <form onSubmit={handleLogin}>
-          <FormGroup>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              value={formState.login.username}
-              onChange={handleLoginInputChange}
-              disabled={isLoading}
-              required
-            />
-          </FormGroup>
-          
-          <FormGroup>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formState.login.password}
-              onChange={handleLoginInputChange}
-              disabled={isLoading}
-              required
-            />
-          </FormGroup>
-          
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Processing...' : 'Login'}
-          </Button>
-        </form>
-        
-        <SignUpText>
-          Not yet signed up?{' '}
-          <SignUpButton type="button" onClick={() => setIsModalOpen(true)}>
-            Create an account
-          </SignUpButton>
-        </SignUpText>
-      </LoginBox>
-
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create Account</DialogTitle>
-          </DialogHeader>
-          
-          <DialogForm onSubmit={handleSignUp}>
-            <FormGroup>
-              <Label htmlFor="signUpUsername">Username</Label>
-              <Input
-                id="signUpUsername"
-                name="username"
-                type="text"
-                value={formState.signUp.username}
-                onChange={handleSignUpInputChange}
-                disabled={isLoading}
-                required
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label htmlFor="signUpEmail">Email</Label>
-              <Input
-                id="signUpEmail"
-                name="email"
-                type="email"
-                value={formState.signUp.email}
-                onChange={handleSignUpInputChange}
-                disabled={isLoading}
-                required
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label htmlFor="signUpPassword">Password</Label>
-              <Input
-                id="signUpPassword"
-                name="password"
-                type="password"
-                value={formState.signUp.password}
-                onChange={handleSignUpInputChange}
-                disabled={isLoading}
-                required
-              />
-            </FormGroup>
-            
-            <DialogFooter>
-              <DialogButtonWrapper>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? 'Processing...' : 'Sign Up'}
-                </Button>
-                <Button 
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  disabled={isLoading}
-                >
-                  Cancel
-                </Button>
-              </DialogButtonWrapper>
-            </DialogFooter>
-          </DialogForm>
-        </DialogContent>
-      </Dialog>
-    </LoginContainer>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={credentials.username}
+        onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+        placeholder="Username"
+      />
+      <input
+        type="password"
+        value={credentials.password}
+        onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+        placeholder="Password"
+      />
+      {error && <div className="error">{error}</div>}
+      <button type="submit" disabled={loading}>
+        {loading ? 'Logging in...' : 'Login'}
+      </button>
+    </form>
   );
 };
 

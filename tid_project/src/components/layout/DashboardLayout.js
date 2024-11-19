@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Parse from 'parse';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
+import { AuthService } from '../../api/services/AuthService';
 import {
   DashboardContainer,
   NavBar,
@@ -19,11 +19,10 @@ const DashboardLayout = () => {
 
   const handleLogout = async () => {
     try {
-      await Parse.User.logOut();
-      localStorage.removeItem('sessionToken');
+      await AuthService.logout();
       navigate('/login');
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error('Logout failed:', error);
     }
   };
 

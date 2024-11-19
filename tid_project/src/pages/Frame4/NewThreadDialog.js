@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog';
 import { useThread } from './ThreadContext';
+import { ThreadService } from '../../services/ThreadService';
 
 const Form = styled.form`
   display: flex;
@@ -39,19 +40,22 @@ const Button = styled.button`
 const NewThreadDialog = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const { createThread } = useThread();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim() || !content.trim()) return;
+    if (!title.trim() || !content.trim() || loading) return;
 
+    setLoading(true);
     try {
-      await createThread(title, content);
+      await ThreadService.createThread(title, content);
+      onClose();
       setTitle('');
       setContent('');
-      onClose();
     } catch (error) {
       console.error('Error creating thread:', error);
+    } finally {
+      setLoading(false);
     }
   };
 

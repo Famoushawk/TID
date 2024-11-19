@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useThread } from './ThreadContext';
-import Parse from 'parse';
+import { CommentService } from '../../api/services/CommentService';
+import { formatTimeAgo } from '../../components/utils/dateUtils';
 
 const CommentSectionWrapper = styled.section`
   width: 100%;
@@ -38,18 +39,6 @@ function CommentSection() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const formatTimeAgo = (date) => {
-    const now = new Date();
-    const diff = now - date;
-    const minutes = Math.floor(diff / 60000);
-    
-    if (minutes < 60) return `${minutes} min ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
-  };
-
   const fetchComments = async () => {
     if (!selectedThread) {
       setComments([]);
@@ -58,23 +47,14 @@ function CommentSection() {
     }
 
     try {
-      const Post = Parse.Object.extend('Post');
-      const query = new Parse.Query(Post);
-      const threadPointer = new Parse.Object('Thread');
-      threadPointer.id = selectedThread.id;
-      
-      query.equalTo('thread', threadPointer);
-      query.ascending('createdAt');
-      const results = await query.find();
-      
+      const results = await CommentService.getComments(selectedThread.id);
       const formattedComments = results.map(comment => ({
-        id: comment.id,
-        name: comment.get('author'),
-        content: comment.get('content'),
+        id: comment.objectId,
+        name: comment.author,
+        content: comment.content,
         time: formatTimeAgo(comment.createdAt),
         avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
       }));
-
       setComments(formattedComments);
     } catch (error) {
       console.error('Error fetching comments:', error);
@@ -84,10 +64,9 @@ function CommentSection() {
     }
   };
 
-  // Fetch comments when thread changes or comments are updated
   useEffect(() => {
     fetchComments();
-  }, [selectedThread, commentsUpdated]); // Add commentsUpdated to dependencies
+  }, [selectedThread, commentsUpdated]);
 
   if (loading) return <div>Loading comments...</div>;
 

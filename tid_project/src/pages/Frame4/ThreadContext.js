@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import Parse from 'parse';
+import { ThreadService } from '../../api/services/ThreadService';
+import { CommentService } from '../../api/services/CommentService';
 
 const ThreadContext = createContext();
 
@@ -12,20 +13,9 @@ export const ThreadProvider = ({ children }) => {
 
   const fetchThreads = async () => {
     try {
-      const Thread = Parse.Object.extend('Thread');
-      const query = new Parse.Query(Thread);
-      query.include('author');
-      query.descending('createdAt');
-      
-      const results = await query.find();
-      
-      if (Array.isArray(results)) {
-        setThreads(results);
-        setError(null);
-      } else {
-        setThreads([]);
-        setError('Invalid response format');
-      }
+      const results = await ThreadService.getThreads();
+      setThreads(results);
+      setError(null);
     } catch (error) {
       console.error('Error fetching threads:', error);
       setThreads([]);
@@ -37,22 +27,8 @@ export const ThreadProvider = ({ children }) => {
 
   const createThread = async (title, content) => {
     try {
-      const Thread = Parse.Object.extend('Thread');
-      const thread = new Thread();
-      const currentUser = Parse.User.current();
-      
-      if (!currentUser) {
-        throw new Error('User must be logged in to create a thread');
-      }
-      
-      thread.set({
-        title,
-        content,
-        author: currentUser
-      });
-      
-      await thread.save();
-      await fetchThreads(); // Refresh the threads list after creating a new one
+      const thread = await ThreadService.createThread(title, content);
+      await fetchThreads();
       return thread;
     } catch (error) {
       console.error('Error creating thread:', error);
@@ -61,27 +37,13 @@ export const ThreadProvider = ({ children }) => {
   };
 
   const createComment = async (threadId, content) => {
+    if (!threadId || !content) {
+      throw new Error('Thread ID and content are required');
+    }
+    
     try {
-      const Post = Parse.Object.extend('Post');
-      const post = new Post();
-      const currentUser = Parse.User.current();
-      
-      if (!currentUser) {
-        throw new Error('User must be logged in to comment');
-      }
-      
-      const Thread = Parse.Object.extend('Thread');
-      const threadPointer = new Thread();
-      threadPointer.id = threadId;
-      
-      post.set({
-        content: content,
-        thread: threadPointer,
-        author: currentUser.get('username')
-      });
-      
-      const savedPost = await post.save();
-      setCommentsUpdated(prev => prev + 1); // Trigger comments refresh
+      const savedPost = await CommentService.createComment(threadId, content);
+      setCommentsUpdated(prev => prev + 1);
       return savedPost;
     } catch (error) {
       console.error('Error creating comment:', error);
@@ -89,25 +51,22 @@ export const ThreadProvider = ({ children }) => {
     }
   };
 
-  // Initialize by fetching threads
   useEffect(() => {
     fetchThreads();
   }, []);
 
-  const value = {
-    threads,
-    loading,
-    error,
-    selectedThread,
-    setSelectedThread,
-    createThread,
-    createComment,
-    refreshThreads: fetchThreads,
-    commentsUpdated
-  };
-
   return (
-    <ThreadContext.Provider value={value}>
+    <ThreadContext.Provider value={{
+      threads,
+      loading,
+      error,
+      selectedThread,
+      setSelectedThread,
+      createThread,
+      createComment,
+      refreshThreads: fetchThreads,
+      commentsUpdated
+    }}>
       {children}
     </ThreadContext.Provider>
   );
