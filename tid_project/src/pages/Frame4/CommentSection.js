@@ -34,48 +34,9 @@ const CommentList = styled.ul`
 `;
 
 function CommentSection() {
-  const { selectedThread } = useThread();
+  const { selectedThread, commentsUpdated } = useThread();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      if (!selectedThread) {
-        setComments([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const Post = Parse.Object.extend('Post');
-        const query = new Parse.Query(Post);
-        const threadPointer = new Parse.Object('Thread');
-        threadPointer.id = selectedThread.id;
-        
-        query.equalTo('thread', threadPointer);
-        query.include('author');
-        query.ascending('createdAt');
-        const results = await query.find();
-        
-        const formattedComments = results.map(comment => ({
-          id: comment.id,
-          name: comment.get('author')?.get('username') || 'Anonymous',
-          content: comment.get('content'),
-          time: formatTimeAgo(comment.createdAt),
-          avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-        }));
-
-        setComments(formattedComments);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-        setComments([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchComments();
-  }, [selectedThread]);
 
   const formatTimeAgo = (date) => {
     const now = new Date();
@@ -88,6 +49,45 @@ function CommentSection() {
     const days = Math.floor(hours / 24);
     return `${days}d ago`;
   };
+
+  const fetchComments = async () => {
+    if (!selectedThread) {
+      setComments([]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const Post = Parse.Object.extend('Post');
+      const query = new Parse.Query(Post);
+      const threadPointer = new Parse.Object('Thread');
+      threadPointer.id = selectedThread.id;
+      
+      query.equalTo('thread', threadPointer);
+      query.ascending('createdAt');
+      const results = await query.find();
+      
+      const formattedComments = results.map(comment => ({
+        id: comment.id,
+        name: comment.get('author'),
+        content: comment.get('content'),
+        time: formatTimeAgo(comment.createdAt),
+        avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
+      }));
+
+      setComments(formattedComments);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      setComments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch comments when thread changes or comments are updated
+  useEffect(() => {
+    fetchComments();
+  }, [selectedThread, commentsUpdated]); // Add commentsUpdated to dependencies
 
   if (loading) return <div>Loading comments...</div>;
 

@@ -64,16 +64,20 @@ const SendButton = styled.button`
 function MessageInput() {
   const [message, setMessage] = useState('');
   const { selectedThread, createComment } = useThread();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!message.trim() || !selectedThread) return;
+    if (!message.trim() || !selectedThread || isSubmitting) return;
 
     try {
+      setIsSubmitting(true);
       await createComment(selectedThread.id, message.trim());
-      setMessage('');
+      setMessage(''); // Clear input after successful submission
     } catch (error) {
       console.error('Error posting comment:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -86,8 +90,9 @@ function MessageInput() {
             placeholder="Type a message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            disabled={isSubmitting}
           />
-          <SendButton type="submit">
+          <SendButton type="submit" disabled={isSubmitting}>
             <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/c1b797fdc359c41babb7c6074ac6705d5d7878fa23423471e457139b8a2c651b"

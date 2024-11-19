@@ -8,20 +8,16 @@ export const ThreadProvider = ({ children }) => {
   const [selectedThread, setSelectedThread] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [commentsUpdated, setCommentsUpdated] = useState(0);
 
   const fetchThreads = async () => {
-    console.log('Fetching threads...'); 
     try {
-      // Create Thread class if it doesn't exist
       const Thread = Parse.Object.extend('Thread');
-      
       const query = new Parse.Query(Thread);
       query.include('author');
       query.descending('createdAt');
       
-      console.log('Executing query...'); 
       const results = await query.find();
-      console.log('Query results:', results);
       
       if (Array.isArray(results)) {
         setThreads(results);
@@ -49,12 +45,14 @@ export const ThreadProvider = ({ children }) => {
         throw new Error('User must be logged in to create a thread');
       }
       
-      thread.set('title', title);
-      thread.set('content', content);
-      thread.set('author', currentUser);
+      thread.set({
+        title,
+        content,
+        author: currentUser
+      });
       
       await thread.save();
-      await fetchThreads();
+      await fetchThreads(); // Refresh the threads list after creating a new one
       return thread;
     } catch (error) {
       console.error('Error creating thread:', error);
@@ -72,22 +70,18 @@ export const ThreadProvider = ({ children }) => {
         throw new Error('User must be logged in to comment');
       }
       
-      // Create thread pointer
       const Thread = Parse.Object.extend('Thread');
       const threadPointer = new Thread();
       threadPointer.id = threadId;
       
-      // Set the required fields
       post.set({
         content: content,
         thread: threadPointer,
-        author: currentUser
+        author: currentUser.get('username')
       });
       
       const savedPost = await post.save();
-      console.log('Comment created successfully:', savedPost);
-      
-      // Return the saved post
+      setCommentsUpdated(prev => prev + 1); // Trigger comments refresh
       return savedPost;
     } catch (error) {
       console.error('Error creating comment:', error);
@@ -97,21 +91,7 @@ export const ThreadProvider = ({ children }) => {
 
   // Initialize by fetching threads
   useEffect(() => {
-    let mounted = true;
-
-    const initialize = async () => {
-      try {
-        await fetchThreads();
-      } catch (error) {
-        console.error('Error initializing threads:', error);
-      }
-    };
-
-    initialize();
-
-    return () => {
-      mounted = false;
-    };
+    fetchThreads();
   }, []);
 
   const value = {
@@ -122,7 +102,8 @@ export const ThreadProvider = ({ children }) => {
     setSelectedThread,
     createThread,
     createComment,
-    refreshThreads: fetchThreads
+    refreshThreads: fetchThreads,
+    commentsUpdated
   };
 
   return (
