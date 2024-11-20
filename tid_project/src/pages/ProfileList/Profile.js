@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileOptions from "./ProfileOptions";
+import { AuthService } from '../../services/AuthService';
 
 const profileData = [
   {
@@ -23,6 +24,8 @@ const profileData = [
 const Profile = () => {
   const [showGoalInput, setShowGoalInput] = useState(false);
   const [goal, setGoal] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleClick = (title) => {
     if (title === "Set a goal for saving up") {
@@ -35,6 +38,21 @@ const Profile = () => {
     setShowGoalInput(false);
     setGoal(""); 
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await AuthService.getCurrentUser();
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <div>

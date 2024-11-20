@@ -69,11 +69,11 @@ function MessageInput() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!message.trim() || !selectedThread || isSubmitting) return;
-
+  
     try {
       setIsSubmitting(true);
-      await createComment(selectedThread.id, message.trim());
-      setMessage(''); // Clearer input after successful submission
+      await createComment(selectedThread.id || selectedThread.objectId, message.trim());
+      setMessage('');
     } catch (error) {
       console.error('Error posting comment:', error);
     } finally {

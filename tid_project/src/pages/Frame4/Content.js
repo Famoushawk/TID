@@ -4,6 +4,7 @@ import { useThread } from './ThreadContext';
 import Header from './Header';
 import CommentSection from './CommentSection';
 import MessageInput from './MessageInput';
+import { ThreadService } from '../../api/services/ThreadService';
 
 const ContentContainer = styled.div`
   border-radius: 28px;
@@ -50,19 +51,17 @@ const BackButton = styled.button`
   }
 `;
 
-function Content() {
-  const { threads, loading, error, selectedThread, setSelectedThread } = useThread();
+const Content = () => {
+  const { threads, selectedThread, setSelectedThread } = useThread();
 
-  console.log('Content component state:', { threads, loading, error }); // Debug log
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  const handleThreadClick = (thread) => {
-    setSelectedThread(thread);
+  const handleThreadClick = async (thread) => {
+    try {
+      const response = await ThreadService.getThread(thread.objectId);
+      setSelectedThread(response);
+    } catch (error) {
+      console.error('Error fetching thread:', error);
+    }
   };
-
-  console.log('Threads loaded:', threads?.length);
 
   return (
     <ContentContainer>
@@ -72,8 +71,8 @@ function Content() {
             Back to Threads
           </BackButton>
           <Header 
-            title={selectedThread.get('title')}
-            content={selectedThread.get('content')}
+            title={selectedThread.title}
+            content={selectedThread.content}
           />
           <CommentSection />
           <MessageInput />
@@ -87,11 +86,11 @@ function Content() {
                 key={thread.id} 
                 onClick={() => handleThreadClick(thread)}
               >
-                <h3>{thread.get('title')}</h3>
-                <p>{thread.get('content')}</p>
+                <h3>{thread.title}</h3>
+                <p>{thread.content}</p>
                 <small>
-                  Posted by {thread.get('author')?.get('username')} on{' '}
-                  {new Date(thread.get('createdAt')).toLocaleDateString()}
+                  Posted by {thread.author?.username} on{' '}
+                  {new Date(thread.createdAt).toLocaleDateString()}
                 </small>
               </ThreadCard>
             ))}
@@ -100,6 +99,6 @@ function Content() {
       )}
     </ContentContainer>
   );
-}
+};
 
 export default Content;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Parse from 'parse';
+import apiClient from '../../api/client';
 import styled from 'styled-components';
 
 const ProfileSection = styled.section`
@@ -34,9 +34,9 @@ const ProfileBar = () => {
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
-        const currentUser = Parse.User.current();
-        if (currentUser) {
-          setUsername(currentUser.get('username'));
+        const response = await apiClient.get('/users/me');
+        if (response.data) {
+          setUsername(response.data.username);
         } else {
           setUsername('Guest');
         }
