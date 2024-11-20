@@ -5,7 +5,7 @@ import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
-import Frame2 from './pages/Frame2/Frame2';
+import ProfileList from './pages/ProfileList/ProfileList';
 import Frame3 from './pages/Frame3/Frame3';
 import Frame4 from './pages/Frame4/Frame4';
 import Login from './pages/Login/Login';
@@ -96,7 +96,7 @@ function App() {
             >
               <Route index element={<Navigate to="/frame1" replace />} />
               <Route path="frame1" element={<Frame1 />} />
-              <Route path="frame2" element={<Frame2 />} />
+              <Route path="ProfileList" element={<ProfileList />} />
               <Route path="frame3" element={<Frame3 />} />
               <Route path="frame4" element={<Frame4 />} />
               <Route path="settings" element={<Settings />} />
