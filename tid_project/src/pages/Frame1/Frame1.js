@@ -7,6 +7,7 @@ const Frame1 = () => {
   const [expenseCategories, setExpenseCategories] = useState(['Mad', 'Transport', 'Underholdning', 'Andet']);
   const [form, setForm] = useState({ category: '', amount: '' });
   const [newCategory, setNewCategory] = useState('');
+  const [manualBalance, setManualBalance] = useState(''); // For manuel opdatering af balance
 
   // Håndter ændringer i input
   const handleInputChange = (e) => {
@@ -17,6 +18,11 @@ const Frame1 = () => {
   // Håndter ændringer i input for ny kategori
   const handleCategoryChange = (e) => {
     setNewCategory(e.target.value);
+  };
+
+  // Håndter ændringer i manuel balance
+  const handleBalanceChange = (e) => {
+    setManualBalance(e.target.value);
   };
 
   // Tilføj en udgift
@@ -46,6 +52,19 @@ const Frame1 = () => {
     }
   };
 
+  // Opdater kontobalancen manuelt
+  const updateBalance = (e) => {
+    e.preventDefault();
+    const newBalance = parseFloat(manualBalance);
+
+    if (!isNaN(newBalance) && newBalance >= 0) {
+      setBalance(newBalance);
+      setManualBalance(''); // Nulstil inputfeltet
+    } else {
+      alert('Indtast venligst et gyldigt beløb.');
+    }
+  };
+
   return (
     <WhiteBackground>
       <div style={{ padding: '20px' }}>
@@ -65,6 +84,29 @@ const Frame1 = () => {
             {balance.toFixed(2)} kr.
           </span>
         </div>
+
+        {/* Formular til manuel opdatering af kontobalance */}
+        <form onSubmit={updateBalance} style={{ marginBottom: '20px' }}>
+          <h3>Opdater kontobalance</h3>
+          <input
+            type="number"
+            value={manualBalance}
+            onChange={handleBalanceChange}
+            placeholder="Ny kontobalance"
+            style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
+          />
+          <button type="submit" style={{
+            padding: '10px',
+            background: '#28a745',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            width: '100%'
+          }}>
+            Opdater Balance
+          </button>
+        </form>
 
         {/* Tilføj udgift */}
         <form onSubmit={addExpense} style={{ marginBottom: '20px' }}>
