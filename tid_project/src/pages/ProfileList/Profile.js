@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProfileOptions from "./ProfileOptions";
-import { AuthService } from '../../services/AuthService';
+import { ProfileService } from '../../api/services/ProfileService';
 
 const profileData = [
   {
@@ -24,35 +24,41 @@ const profileData = [
 const Profile = () => {
   const [showGoalInput, setShowGoalInput] = useState(false);
   const [goal, setGoal] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [userGoals, setUserGoals] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchUserGoals = async () => {
+    try {
+      const goals = await ProfileService.getCurrentUserGoals();
+      setUserGoals(goals);
+    } catch (error) {
+      console.error('Error fetching goals:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleClick = (title) => {
-    if (title === "Set a goal for saving up") {
+    if (title === "Set goal for saving up") {
       setShowGoalInput(true);
     }
   };
 
-  const handleGoalSubmit = () => {
-    alert(`Your new goal "${goal}" has been set!`);
-    setShowGoalInput(false);
-    setGoal(""); 
+  const handleGoalSubmit = async () => {
+    if (!goal.trim()) return;
+    
+    try {
+      setLoading(true);
+      await ProfileService.setGoal(goal);
+      await fetchUserGoals();
+      setShowGoalInput(false);
+      setGoal("");
+    } catch (error) {
+      console.error('Error setting goal:', error);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await AuthService.getCurrentUser();
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   return (
     <div>
@@ -75,10 +81,22 @@ const Profile = () => {
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
           />
-          <GoalButton onClick={handleGoalSubmit} disabled={!goal.trim()}>
+          <GoalButton onClick={handleGoalSubmit} disabled={!goal.trim() || loading}>
             Save Goal
           </GoalButton>
         </GoalContainer>
+      )}
+
+      {userGoals.length > 0 && (
+        <GoalsListContainer>
+          <h3>Your Goals</h3>
+          {userGoals.map((goal, index) => (
+            <GoalItem key={goal.objectId || index}>
+              {goal.Goal}
+              <GoalDate>{new Date(goal.createdAt).toLocaleDateString()}</GoalDate>
+            </GoalItem>
+          ))}
+        </GoalsListContainer>
       )}
     </div>
   );
@@ -108,6 +126,25 @@ const GoalContainer = styled.div`
   }
 `;
 
+const GoalsListContainer = styled(GoalContainer)`
+  margin-top: 20px;
+`;
+
+const GoalItem = styled.div`
+  padding: 12px;
+  margin: 8px 0;
+  background: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const GoalDate = styled.span`
+  font-size: 0.8em;
+  color: #666;
+`;
+
 const GoalInput = styled.input`
   width: 100%;
   padding: 10px;
@@ -128,7 +165,7 @@ const GoalButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: #0056b3;
   }
 
