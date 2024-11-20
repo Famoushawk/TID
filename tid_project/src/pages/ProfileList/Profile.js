@@ -1,39 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProfileOptions from "./ProfileOptions";
-
-const profileData = [
-  {
-    title: "Budget Templates",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./wallet.png",
-  },
-  {
-    title: "Set goal for saving up",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./target.png",
-  },
-  {
-    title: "Diagram of expenses",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./calculator.png",
-  },
-];
+import axios from "axios";
 
 const Profile = () => {
+  const [profileData, setProfileData] = useState([]);
   const [showGoalInput, setShowGoalInput] = useState(false);
   const [goal, setGoal] = useState("");
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/profiles")
+      .then((response) => setProfileData(response.data))
+      .catch((error) => console.error(error));
+  }, []);
+
   const handleClick = (title) => {
-    if (title === "Set a goal for saving up") {
+    if (title === "Set goal for saving up") {
       setShowGoalInput(true);
     }
   };
 
   const handleGoalSubmit = () => {
-    alert(`Your new goal "${goal}" has been set!`);
-    setShowGoalInput(false);
-    setGoal(""); 
+    axios
+      .post("http://localhost:3000/goals", { goal })
+      .then(() => {
+        alert(`Your new goal "${goal}" has been set!`);
+        setShowGoalInput(false);
+        setGoal("");
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -47,7 +43,6 @@ const Profile = () => {
           />
         ))}
       </ListContainer>
-
       {showGoalInput && (
         <GoalContainer>
           <h3>Set Your Saving Goal</h3>
