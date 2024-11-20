@@ -1,12 +1,32 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProfileOptions from "./ProfileOptions";
-import axios from "axios";
+import { AuthService } from '../../services/AuthService';
+
+const profileData = [
+  {
+    title: "Budget Templates",
+    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
+    imageUrl: "./wallet.png",
+  },
+  {
+    title: "Set goal for saving up",
+    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
+    imageUrl: "./target.png",
+  },
+  {
+    title: "Diagram of expenses",
+    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
+    imageUrl: "./calculator.png",
+  },
+];
 
 const Profile = () => {
   const [profileData, setProfileData] = useState([]);
   const [showGoalInput, setShowGoalInput] = useState(false);
   const [goal, setGoal] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -31,6 +51,21 @@ const Profile = () => {
       })
       .catch((error) => console.error(error));
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await AuthService.getCurrentUser();
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <div>

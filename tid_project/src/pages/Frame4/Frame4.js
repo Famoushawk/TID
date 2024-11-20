@@ -1,13 +1,16 @@
-import { WhiteBackground } from '../../components/layout/Layout.styles';
 import React from 'react';
+import { WhiteBackground } from '../../components/layout/Layout.styles';
 import Content from './Content';
+import { ThreadProvider } from './ThreadContext';
 
 const Frame4 = () => {
-    return (
+  return (
+    <ThreadProvider>
       <WhiteBackground>
-        <Content/>
+        <Content />
       </WhiteBackground>
-    );
-  };
-  
-  export default Frame4;
+    </ThreadProvider>
+  );
+};
+
+export default Frame4;

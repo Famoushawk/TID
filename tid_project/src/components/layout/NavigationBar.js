@@ -5,7 +5,7 @@ import BurgerMenu from './BurgerMenu';
 import SettingsButton from './SettingsButton';
 import { NavBarContainer } from './Layout.styles';
 
-const NavigationBar = () => {
+const NavigationBar = ({ onAddButtonClick }) => {
   const location = useLocation();
 
   const renderButton = () => {
@@ -15,7 +15,7 @@ const NavigationBar = () => {
         return <SettingsButton />;
       case '/frame3':
       case '/frame4':
-        return <AddButton />;
+        return <AddButton onClick={onAddButtonClick} />;
       default:
         return null;
     }

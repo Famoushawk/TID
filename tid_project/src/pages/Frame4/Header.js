@@ -34,24 +34,6 @@ const HeaderInner = styled.div`
   }
 `;
 
-const ProfileImage = styled.img`
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  color: var(--M3-sys-light-surface, var(--Schemes-Surface, #fef7ff));
-  white-space: nowrap;
-  text-align: center;
-  letter-spacing: var(--Title-Medium-Tracking, 0.15px);
-  width: 40px;
-  margin: auto 0;
-  font: 500 var(--Title-Medium-Size, 16px) / var(--Title-Medium-Line-Height, 24px) var(--Title-Medium-Font, Roboto);
-  @media (max-width: 991px) {
-    white-space: initial;
-  }
-`;
-
-
 const TextContent = styled.div`
   align-self: stretch;
   display: flex;
@@ -85,18 +67,14 @@ const Subtitle = styled.p`
   }
 `;
 
-function Header() {
+function Header({ title = "Subject", content }) {
   return (
     <HeaderWrapper>
       <HeaderContent>
         <HeaderInner>
-          <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-        alt="Profile picture" />
           <TextContent>
-            <Title>Subject</Title>
-            <Subtitle>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </Subtitle>
+            <Title>{title}</Title>
+            {content && <Subtitle>{content}</Subtitle>}
           </TextContent>
         </HeaderInner>
       </HeaderContent>

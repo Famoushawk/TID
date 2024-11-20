@@ -1,8 +1,8 @@
-import React from 'react';
-import Parse from 'parse';
+import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
+import { AuthService } from '../../api/services/AuthService';
 import {
   DashboardContainer,
   NavBar,
@@ -14,21 +14,21 @@ import {
 } from './Layout.styles';
 
 const DashboardLayout = () => {
+  const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await Parse.User.logOut();
-      localStorage.removeItem('sessionToken');
+      await AuthService.logout();
       navigate('/login');
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error('Logout failed:', error);
     }
   };
 
   return (
     <div>
-      <NavigationBar />
+      <NavigationBar onAddButtonClick={() => setIsNewThreadDialogOpen(true)} />
       <DashboardContainer>
         <NavBar>
           <NavContent>

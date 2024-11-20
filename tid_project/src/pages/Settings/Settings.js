@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Parse from 'parse';
+import { AuthService } from '../../api/services/AuthService';
 import {
   SettingsContainer,
   PageTitle,
@@ -14,26 +14,21 @@ import {
 } from './Settings.styles';
 
 const Settings = () => {
-  const [user, setUser] = useState({
-    username: '',
-    email: ''
-  });
-  const [newPassword, setNewPassword] = useState({
-    current: '',
-    new: '',
-    confirm: ''
-  });
+  const [user, setUser] = useState({ username: '', email: '' });
+  const [newPassword, setNewPassword] = useState({ current: '', new: '', confirm: '' });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
+      try {
+        const currentUser = await AuthService.getCurrentUser();
         setUser({
-          username: currentUser.get('username'),
-          email: currentUser.get('email') || '',
+          username: currentUser.data.username,
+          email: currentUser.data.email || '',
         });
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
     };
 
@@ -46,12 +41,8 @@ const Settings = () => {
     setMessage({ text: '', type: '' });
 
     try {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
-        currentUser.set('email', user.email);
-        await currentUser.save();
-        setMessage({ text: 'Profile updated successfully!', type: 'success' });
-      }
+      await AuthService.updateProfile({ email: user.email });
+      setMessage({ text: 'Profile updated successfully!', type: 'success' });
     } catch (error) {
       setMessage({ text: error.message || 'Error updating profile', type: 'error' });
     } finally {
@@ -71,14 +62,9 @@ const Settings = () => {
     }
 
     try {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
-        await Parse.User.logIn(user.username, newPassword.current);
-        currentUser.setPassword(newPassword.new);
-        await currentUser.save();
-        setMessage({ text: 'Password changed successfully!', type: 'success' });
-        setNewPassword({ current: '', new: '', confirm: '' });
-      }
+      await AuthService.changePassword(newPassword.current, newPassword.new);
+      setMessage({ text: 'Password changed successfully!', type: 'success' });
+      setNewPassword({ current: '', new: '', confirm: '' });
     } catch (error) {
       setMessage({ text: error.message || 'Error changing password', type: 'error' });
     } finally {
