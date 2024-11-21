@@ -27,7 +27,7 @@ const Profile = () => {
   const [goal, setGoal] = useState("");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+//
   useEffect(() => {
     axios
       .get("http://localhost:3000/profiles")
@@ -41,6 +41,9 @@ const Profile = () => {
     }
   };
 
+  //
+//**
+
   const handleGoalSubmit = () => {
     axios
       .post("http://localhost:3000/goals", { goal })
@@ -51,7 +54,7 @@ const Profile = () => {
       })
       .catch((error) => console.error(error));
   };
-
+*//
   useEffect(() => {
     const fetchUserData = async () => {
       try {

@@ -2,10 +2,14 @@ import { WhiteBackground } from '../../components/layout/Layout.styles';
 import React from 'react';
 import Profile from './Profile';
 
-const ProfileList = ({ children }) => {
+const ProfileList = ({ profiles = [] }) => {
   return (
     <WhiteBackground>
-      {children || <Profile />}
+      {profiles.length > 0 ? (
+        profiles.map((profile, index) => <Profile key={index} {...profile} />)
+      ) : (
+        <p>No profiles available</p>
+      )}
     </WhiteBackground>
   );
 };
