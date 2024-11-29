@@ -54,7 +54,6 @@ const Profile = () => {
       })
       .catch((error) => console.error(error));
   };
-*//
   useEffect(() => {
     const fetchUserData = async () => {
       try {
