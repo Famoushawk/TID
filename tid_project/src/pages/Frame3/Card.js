@@ -1,31 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
-const cardData = [
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Video", date: "Updated today", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Video", date: "Updated 2 days ago", type: "video" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Video", date: "Updated today", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Video", date: "Updated 2 days ago", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-];
+import { BlogPostService } from "../../api/services/BlogPostService";
+import { VideoService } from "../../api/services/VideoService";
+import { ThreadService } from "../../api/services/ThreadService";
+import { formatTimeAgo } from "../../components/utils/dateUtils";
 
 function CardGrid() {
+  const [cardData, setCardData] = useState([]);
+
+  useEffect(() => {
+    async function loadData() {
+        const videos = await VideoService.getVideoes();
+        const blogPosts = await BlogPostService.getBlogPosts();
+        const threads = await ThreadService.getThreads();
+
+      const combinedData = [
+        ...videos.map(video => ({
+          title: video.title,
+          date: formatTimeAgo(video.createdAt), // Adjust with actual timestamp logic if needed
+          type: "video",
+        })),
+        ...blogPosts.map(blogpost => ({
+          title: blogpost.title,
+          date: formatTimeAgo(blogpost.title), // Adjust with actual timestamp logic if needed
+          type: "blog",
+        })),
+        ...threads.maps(thread => ({
+          title: thread.title,
+          date: formatTimeAgo(thread.createdAt),
+          type: "debate"
+        }))
+      ];
+
+      setCardData(combinedData);
+    }
+    loadData();
+  }, []); 
+
+
   return (
     <GridContainer>
       {cardData.map((card, index) => (

@@ -3,5 +3,7 @@ export const ENDPOINTS = {
   USERS: '/users',
   THREADS: '/classes/Thread',
   POSTS: '/classes/Post',
-  SETTINGS: '/users/me'
+  SETTINGS: '/users/me',
+  VIDEOES: '/classes/Videoes',
+  BLOGPOST: '/classes/BlogPost'
 };
