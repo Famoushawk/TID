@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const filterOptions = ["Blogs", "Debate", "Videos"];
-
-function FiltersLine() {
+function FiltersLine({ filterOptions = ["All", "Debate", "Video", "Blog"], currentFilter, onFilterChange }) {
   return (
     <FilterContainer>
       {filterOptions.map((option, index) => (
-        <FilterButton key={index}>
+        <FilterButton key={index}
+          onClick={() => onFilterChange(option)}
+          className={currentFilter === option ? "active" : ""}>
           <ButtonContent>{option}</ButtonContent>
         </FilterButton>
       ))}

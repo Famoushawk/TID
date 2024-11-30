@@ -1,34 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { BlogPostService } from "../../api/services/BlogPostService";
+import { VideoService } from "../../api/services/VideoService";
+import { ThreadService } from "../../api/services/ThreadService";
+import { formatTimeAgo } from "../../components/utils/dateUtils";
 
-const cardData = [
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Video", date: "Updated today", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Video", date: "Updated 2 days ago", type: "video" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Video", date: "Updated today", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-  { title: "Blog post", date: "Updated today", type: "blog" },
-  { title: "Video", date: "Updated yesterday", type: "video" },
-  { title: "Video", date: "Updated 2 days ago", type: "video" },
-  { title: "Debate", date: "Updated yesterday", type: "debate" },
-  { title: "Debate", date: "Updated 2 days ago", type: "debate" },
-];
+function CardGrid({ filter }) {
+  const [cardData, setCardData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-function CardGrid() {
+
+  useEffect(() => {
+    async function loadData() {
+        const videos = await VideoService.getVideoes();
+        const blogPosts = await BlogPostService.getBlogPosts();
+        const threads = await ThreadService.getThreads();
+
+      const combinedData = [
+        ...videos.map(video => ({
+          title: video.title,
+          date: formatTimeAgo(video.createdAt),
+          type: "Video",
+        })),
+        ...blogPosts.map(blogpost => ({
+          title: blogpost.title,
+          date: formatTimeAgo(blogpost.createdAt), 
+          type: "Blog",
+        })),
+        ...threads.map(thread => ({
+          title: thread.title,
+          date: formatTimeAgo(thread.createdAt),
+          type: "Debate"
+        }))
+      ];
+
+      setCardData(combinedData);
+    }
+    loadData();
+  }, []); 
+
+  useEffect(() => {
+    if (filter === "All"){
+      setFilteredData(cardData);
+    } else {
+      setFilteredData(cardData.filter( card => card.type === filter))
+    }
+  }, [filter, cardData]);
+
+
   return (
     <GridContainer>
-      {cardData.map((card, index) => (
+      {filteredData.map((card, index) => (
         <Card key={index}>
           <CardImage src="https://cdn.builder.io/api/v1/image/assets/TEMP/2d23df4276f92df3f4c284ccb58821f758e6ad1938c526deb3aedd30f0d776ad?placeholderIfAbsent=true&apiKey=d8134f90761a4e9db589863aef8c0d7c" alt={card.title} />
           <CardContent>
