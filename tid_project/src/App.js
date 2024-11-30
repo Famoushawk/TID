@@ -10,6 +10,7 @@ import Frame4 from './pages/Frame4/Frame4';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
+import CreateContentPage from './pages/CreateContent/CreateContentPage';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
@@ -99,6 +100,7 @@ function App() {
               <Route path="frame3" element={<Frame3 />} />
               <Route path="frame4" element={<Frame4 />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="/create-content" element={<CreateContentPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

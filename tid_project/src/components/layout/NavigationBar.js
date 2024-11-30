@@ -12,9 +12,9 @@ const NavigationBar = ({ onAddButtonClick }) => {
     switch (location.pathname) {
       case '/frame1':
       case '/frame2':
+      case '/frame4':
         return <SettingsButton />;
       case '/frame3':
-      case '/frame4':
         return <AddButton onClick={onAddButtonClick} />;
       default:
         return null;

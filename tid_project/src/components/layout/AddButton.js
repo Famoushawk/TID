@@ -1,8 +1,17 @@
 import React from 'react';
 import { AddButtonContainer, IconWrapper } from './Layout.styles';
+import { useNavigate } from "react-router-dom";
 
-const AddButton = () => (
-  <AddButtonContainer>
+
+const AddButton = () => {
+  const navigate = useNavigate();
+
+  const handleAddClick = () => {
+    navigate("/create-content");
+  };
+
+  return (
+  <AddButtonContainer onClick = {handleAddClick}>
     <IconWrapper>
       <img 
         src="https://cdn.icon-icons.com/icons2/916/PNG/512/Plus_icon-icons.com_71848.png" 
@@ -12,5 +21,6 @@ const AddButton = () => (
     </IconWrapper>
   </AddButtonContainer>
 );
+};
 
 export default AddButton;
