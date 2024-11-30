@@ -11,10 +11,10 @@ export const VideoService = {
     return response.data.results;
   },
 
-  async createVideo(title, url) {
+  async createVideo(title, content) {
     const response = await apiClient.post(ENDPOINTS.VIDEOES, {
       title,
-      url
+      content
     });
     return response.data;
   },
