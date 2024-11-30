@@ -5,7 +5,7 @@ import Profile from './Profile';
 const ProfileList = () => {
   return (
     <WhiteBackground>
-      <Profile/>
+      <Profile />
     </WhiteBackground>
   );
 };
