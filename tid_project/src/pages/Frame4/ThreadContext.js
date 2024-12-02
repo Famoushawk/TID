@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ThreadService } from '../../api/services/ThreadService';
 import { CommentService } from '../../api/services/CommentService';
 
-const ThreadContext = createContext();
+export const ThreadContext = createContext();
 
 export const ThreadProvider = ({ children }) => {
   const [threads, setThreads] = useState([]);

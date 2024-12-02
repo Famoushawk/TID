@@ -11,6 +11,7 @@ import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
+import SingleContentPage from './pages/ContentPages/SingleContentPage';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
@@ -101,6 +102,7 @@ function App() {
               <Route path="frame4" element={<Frame4 />} />
               <Route path="settings" element={<Settings />} />
               <Route path="/create-content" element={<CreateContentPage />} />
+              <Route path="/content/:type/:id" element={<SingleContentPage/>} />
             </Route>
           </Routes>
         </BrowserRouter>
