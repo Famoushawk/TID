@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useThread } from './ThreadContext';
 import { CommentService } from '../../api/services/CommentService';
-import { formatTimeAgo } from '../../components/utils/dateUtils';
 
 const CommentSectionWrapper = styled.section`
   width: 100%;
@@ -34,7 +33,7 @@ function CommentSection() {
       id: comment.objectId,
       name: comment.author,
       content: comment.content,
-      time: formatTimeAgo(comment.createdAt),
+      time: comment.createdAt, // Pass the raw date to CommentItem
       avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
     }));
   };

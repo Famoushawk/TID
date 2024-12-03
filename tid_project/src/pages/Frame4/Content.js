@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useThread } from './ThreadContext';
 import Header from './Header';
 import CommentSection from './CommentSection';
 import MessageInput from './MessageInput';
+import ThreadCard from './ThreadCard';
+import NewThreadDialog from './NewThreadDialog';
+import AddButton from '../../components/layout/AddButton';
 import { ThreadService } from '../../api/services/ThreadService';
 
 const ContentContainer = styled.div`
@@ -15,6 +18,7 @@ const ContentContainer = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: flex-start;
+  position: relative;
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -25,17 +29,6 @@ const ThreadList = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing[4]};
   padding: ${({ theme }) => theme.spacing[4]};
-`;
-
-const ThreadCard = styled.div`
-  padding: ${({ theme }) => theme.spacing[4]};
-  border: 1px solid ${({ theme }) => theme.colors.gray200};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.gray50};
-  }
 `;
 
 const BackButton = styled.button`
@@ -53,6 +46,7 @@ const BackButton = styled.button`
 
 const Content = () => {
   const { threads, selectedThread, setSelectedThread } = useThread();
+  const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
 
   const handleThreadClick = async (thread) => {
     try {
@@ -61,6 +55,12 @@ const Content = () => {
     } catch (error) {
       console.error('Error fetching thread:', error);
     }
+  };
+
+  // Override the AddButton's default navigation behavior
+  const handleAddClick = (e) => {
+    e.preventDefault();
+    setIsNewThreadDialogOpen(true);
   };
 
   return (
@@ -83,18 +83,17 @@ const Content = () => {
           <ThreadList>
             {threads.map((thread) => (
               <ThreadCard 
-                key={thread.id} 
+                key={thread.objectId}
+                thread={thread}
                 onClick={() => handleThreadClick(thread)}
-              >
-                <h3>{thread.title}</h3>
-                <p>{thread.content}</p>
-                <small>
-                  Posted by {thread.author?.username} on{' '}
-                  {new Date(thread.createdAt).toLocaleDateString()}
-                </small>
-              </ThreadCard>
+              />
             ))}
           </ThreadList>
+          <AddButton onClick={handleAddClick} />
+          <NewThreadDialog 
+            isOpen={isNewThreadDialogOpen}
+            onClose={() => setIsNewThreadDialogOpen(false)}
+          />
         </>
       )}
     </ContentContainer>
