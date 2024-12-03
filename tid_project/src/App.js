@@ -13,6 +13,11 @@ import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
 import Parse from 'parse/dist/parse.min.js';
+<<<<<<< Updated upstream
+=======
+import DownloadBudgetTemplate from './components/DownloadBudgetTemplate';
+import SetUpGoal from './pages/SetUpGoal/SetUpGoal';
+>>>>>>> Stashed changes
 
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'OJ2uQ7qSFn4eMg3y23jPPOq0wBnD49DEiITknteS'); 
 Parse.serverURL = 'https://parseapi.back4app.com';
@@ -105,7 +110,14 @@ function App() {
               <Route path="frame3" element={<Frame3 />} />
               <Route path="frame4" element={<Frame4 />} />
               <Route path="settings" element={<Settings />} />
+<<<<<<< Updated upstream
               <Route path="/create-content" element={<CreateContentPage />} />
+=======
+              <Route path="create-content" element={<CreateContentPage />} />
+              <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
+              <Route path="/set-up-goal" element={<SetUpGoal />} />
+              <Route path="expenses-diagram" element={<ExpensePage />} />
+>>>>>>> Stashed changes
             </Route>
           </Routes>
         </BrowserRouter>
