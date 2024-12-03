@@ -13,8 +13,10 @@ const ProfileSection = styled.section`
 
 const ProfileImage = styled.img`
   width: 84px;
-  aspect-ratio: 1.05;
+  height: 84px;
+  object-fit: cover;
   border-radius: ${({ theme }) => theme.borderRadius.full};
+  border: 2px solid ${({ theme }) => theme.colors.white};
 `;
 
 const ProfileInfo = styled.div`
@@ -29,34 +31,51 @@ const Username = styled.span`
 `;
 
 const ProfileBar = () => {
-  const [username, setUsername] = useState('Loading...');
+  const [user, setUser] = useState({
+    username: 'Loading...',
+    avatar: null
+  });
 
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
         const response = await apiClient.get('/users/me');
         if (response.data) {
-          setUsername(response.data.username);
+          setUser({
+            username: response.data.username,
+            avatar: response.data.avatar || null
+          });
         } else {
-          setUsername('Guest');
+          setUser({
+            username: 'Guest',
+            avatar: null
+          });
         }
       } catch (error) {
         console.error('Error fetching user:', error);
-        setUsername('Error loading user');
+        setUser({
+          username: 'Error loading user',
+          avatar: null
+        });
       }
     };
 
     getCurrentUser();
   }, []);
 
+  const defaultAvatar = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png";
+
   return (
     <ProfileSection>
       <ProfileImage
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
-        alt="Profile picture"
+        src={user.avatar || defaultAvatar}
+        alt={`${user.username}'s profile picture`}
+        onError={(e) => {
+          e.target.src = defaultAvatar;
+        }}
       />
       <ProfileInfo>
-        <Username>{username}</Username>
+        <Username>{user.username}</Username>
       </ProfileInfo>
     </ProfileSection>
   );
