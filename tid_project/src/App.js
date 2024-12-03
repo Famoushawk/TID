@@ -93,7 +93,8 @@ function App() {
               <Route path="frame4" element={<Frame4 />} />
               <Route path="settings" element={<Settings />} />
               <Route path="create-content" element={<CreateContentPage />} />
-              <Route path="download-budget-template" element={<DownloadBudgetTemplate />} /> {/* New route */}
+              <Route path="download-budget-template" element={<DownloadBudgetTemplate />} /> 
+              <Route path="/frame2" element={<Frame2 />} />
             </Route>
           </Routes>
         </BrowserRouter>
