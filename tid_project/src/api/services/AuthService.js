@@ -27,13 +27,32 @@ export const AuthService = {
   },
 
   async updateProfile(userData) {
-    return await apiClient.put(ENDPOINTS.SETTINGS, userData);
+    const { email, avatar } = userData;
+    const updateData = {
+      email,
+      avatar: avatar  // Just send the URL as a string
+    };
+    
+    try {
+      const currentUser = await this.getCurrentUser();
+      const userId = currentUser.data.objectId;
+      return await apiClient.put(`/users/${userId}`, updateData);
+    } catch (error) {
+      console.error('Error updating profile:', error.response?.data || error);
+      throw error;
+    }
   },
 
   async changePassword(oldPassword, newPassword) {
-    return await apiClient.put(ENDPOINTS.SETTINGS, {
-      password: newPassword,
-      old_password: oldPassword
-    });
+    try {
+      const currentUser = await this.getCurrentUser();
+      const userId = currentUser.data.objectId;
+      return await apiClient.put(`/users/${userId}`, {
+        password: newPassword
+      });
+    } catch (error) {
+      console.error('Error changing password:', error.response?.data || error);
+      throw error;
+    }
   }
 };

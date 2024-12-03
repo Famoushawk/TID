@@ -87,3 +87,47 @@ export const Button = styled.button`
     cursor: not-allowed;
   }
 `;
+
+export const AvatarGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+`;
+
+export const AvatarOption = styled.div`
+  position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px;
+  border: 2px solid ${({ isSelected, theme }) => 
+    isSelected ? theme.colors.primary : 'transparent'};
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: ${({ theme, isSelected }) => 
+      isSelected ? theme.colors.primary : theme.colors.gray300};
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+`;
+
+export const CurrentAvatar = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
