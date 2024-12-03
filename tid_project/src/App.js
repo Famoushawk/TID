@@ -12,6 +12,10 @@ import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
+import Parse from 'parse/dist/parse.min.js';
+
+Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'OJ2uQ7qSFn4eMg3y23jPPOq0wBnD49DEiITknteS'); 
+Parse.serverURL = 'https://parseapi.back4app.com';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
