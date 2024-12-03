@@ -5,6 +5,7 @@ export const CommentService = {
   async getComments(threadId) {
     const response = await apiClient.get(ENDPOINTS.POSTS, {
       params: {
+        include: 'author',  // Include author to get profile picture
         where: JSON.stringify({
           thread: { __type: "Pointer", className: "Thread", objectId: threadId }
         }),
@@ -19,10 +20,17 @@ export const CommentService = {
       const userResponse = await apiClient.get('/users/me');
       const username = userResponse.data.username;
       const userId = userResponse.data.objectId;
+      const avatar = userResponse.data.avatar?.url || null; // Get user's avatar if it exists
  
       const data = {
         content,
-        author: username,
+        author: {
+          __type: "Pointer",
+          className: "_User",
+          objectId: userId
+        },
+        authorName: username,
+        authorAvatar: avatar,
         thread: {
           __type: "Pointer", 
           className: "Thread",
@@ -46,4 +54,4 @@ export const CommentService = {
       throw error;
     }
   }
- };
+};

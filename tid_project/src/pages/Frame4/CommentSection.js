@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CommentItem from './CommentItem';
 import { useThread } from './ThreadContext';
 import { CommentService } from '../../api/services/CommentService';
+import { formatTimeAgo } from '../../components/utils/dateUtils';
 
 const CommentSectionWrapper = styled.section`
   width: 100%;
@@ -31,10 +32,12 @@ function CommentSection() {
   const formatComments = (results) => {
     return results.map(comment => ({
       id: comment.objectId,
-      name: comment.author,
+      name: comment.author?.username || comment.authorName,
       content: comment.content,
-      time: comment.createdAt, // Pass the raw date to CommentItem
-      avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS59s6qBOFlkS5LN4Z0U3G71nCWWg3SuHGVMw&s"
+      time: formatTimeAgo(comment.createdAt),
+      avatarSrc: comment.author?.avatar?.url || 
+                comment.authorAvatar || 
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
     }));
   };
 
