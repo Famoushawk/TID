@@ -38,14 +38,14 @@ const AvatarWrapper = styled.div`
   overflow: hidden;
   justify-content: center;
   width: 40px;
+  height: 40px;
   margin: auto 0;
 `;
 
 const Avatar = styled.img`
-  aspect-ratio: 1;
-  object-fit: contain;
-  object-position: center;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 50%;
 `;
 
@@ -96,17 +96,27 @@ const Time = styled.div`
 `;
 
 function CommentItem({ name, content, time, avatarSrc }) {
+  const defaultAvatar = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png";
+
+  const handleImageError = (e) => {
+    e.target.src = defaultAvatar;
+  };
+
   return (
     <CommentItemWrapper>
       <CommentContent>
         <AvatarWrapper>
-          <Avatar loading="lazy" src={avatarSrc} alt={`${name}'s avatar`} />
+          <Avatar 
+            src={avatarSrc || defaultAvatar} 
+            alt={`${name}'s avatar`}
+            onError={handleImageError}
+          />
         </AvatarWrapper>
         <TextContent>
           <Name>{name}</Name>
           <CommentText>{content}</CommentText>
         </TextContent>
-        <Time>{formatTimeAgo(time)}</Time>
+        <Time>{time}</Time>
       </CommentContent>
     </CommentItemWrapper>
   );

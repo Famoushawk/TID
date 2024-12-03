@@ -29,15 +29,15 @@ function CommentSection() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const defaultAvatar = "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png";
+
   const formatComments = (results) => {
     return results.map(comment => ({
       id: comment.objectId,
-      name: comment.author?.username || comment.authorName,
+      name: comment.author || 'Anonymous',
       content: comment.content,
       time: formatTimeAgo(comment.createdAt),
-      avatarSrc: comment.author?.avatar?.url || 
-                comment.authorAvatar || 
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+      avatarSrc: comment.authorAvatar || defaultAvatar // Use the stored avatar
     }));
   };
 
