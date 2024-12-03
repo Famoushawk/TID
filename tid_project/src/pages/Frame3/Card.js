@@ -6,7 +6,7 @@ import { ThreadService } from "../../api/services/ThreadService";
 import { formatTimeAgo } from "../../components/utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import { VideoProvider } from "../ContentPages/VideoContext";
-import { ThreadProvider } from "../Frame4/ThreadContext";
+import { ThreadProvider } from "../Threads/ThreadContext";
 import { BlogProvider } from "../ContentPages/BlogContext";
 
 function CardGrid({ filter }) {

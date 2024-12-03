@@ -3,7 +3,7 @@ import { WhiteBackground } from '../../components/layout/Layout.styles';
 import Content from './Content';
 import { ThreadProvider } from './ThreadContext';
 
-const Frame4 = () => {
+const Threads = () => {
   return (
     <ThreadProvider>
       <WhiteBackground>
@@ -13,4 +13,4 @@ const Frame4 = () => {
   );
 };
 
-export default Frame4;
+export default Threads;

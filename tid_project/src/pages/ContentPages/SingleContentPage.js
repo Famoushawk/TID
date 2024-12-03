@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { VideoContext } from "../ContentPages/VideoContext";
 import { BlogContext } from "../ContentPages/BlogContext";
-import { ThreadContext } from "../Frame4/ThreadContext";
+import { ThreadContext } from "../Threads/ThreadContext";
 
 const SingleContentPage = () => {
     const { id, type } = useParams();

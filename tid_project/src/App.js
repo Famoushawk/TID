@@ -6,7 +6,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
 import Frame3 from './pages/Frame3/Frame3';
-import Frame4 from './pages/Frame4/Frame4';
+import Threads from './pages/Threads/Threads';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
@@ -99,7 +99,7 @@ function App() {
               <Route path="frame1" element={<Frame1 />} />
               {/*  <Route path="frame2" element={<Frame2 />} /> */}
               <Route path="frame3" element={<Frame3 />} />
-              <Route path="frame4" element={<Frame4 />} />
+              <Route path="Threads" element={<Threads />} />
               <Route path="settings" element={<Settings />} />
               <Route path="/create-content" element={<CreateContentPage />} />
               <Route path="/content/:type/:id" element={<SingleContentPage/>} />
