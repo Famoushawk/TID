@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BlogPostService } from "../../api/services/BlogPostService";
 import { VideoService } from "../../api/services/VideoService";
-import { ThreadService } from "../../api/services/ThreadService";
+//import { ThreadService } from "../../api/services/ThreadService";
 import { formatTimeAgo } from "../../components/utils/dateUtils";
 import { useNavigate } from "react-router-dom";
-import { VideoProvider } from "../ContentPages/VideoContext";
-import { ThreadProvider } from "../Threads/ThreadContext";
-import { BlogProvider } from "../ContentPages/BlogContext";
 
 function CardGrid({ filter }) {
   const [cardData, setCardData] = useState([]);
@@ -18,27 +15,27 @@ function CardGrid({ filter }) {
     async function loadData() {
         const videos = await VideoService.getVideoes();
         const blogPosts = await BlogPostService.getBlogPosts();
-        const threads = await ThreadService.getThreads();
+        //const threads = await ThreadService.getThreads();
 
       const combinedData = [
         ...videos.map(video => ({
           title: video.title,
           date: formatTimeAgo(video.createdAt),
           type: "Video",
-          id: video.objectID
+          id: video.objectId
         })),
         ...blogPosts.map(blogpost => ({
           title: blogpost.title,
           date: formatTimeAgo(blogpost.createdAt), 
           type: "Blog",
-          id: blogpost.objectID
+          id: blogpost.objectId
         })),
-        ...threads.map(thread => ({
-          title: thread.title,
-          date: formatTimeAgo(thread.createdAt),
-          type: "Debate",
-          id: thread.objectID
-        }))
+        //...threads.map(thread => ({
+        //  title: thread.title,
+        // date: formatTimeAgo(thread.createdAt),
+        //  type: "Debate",
+        //  id: thread.objectID
+        //}))
       ];
 
       setCardData(combinedData);
@@ -59,9 +56,7 @@ function CardGrid({ filter }) {
   };
 
   return (
-    <ThreadProvider>
-    <VideoProvider>
-    <BlogProvider>
+
     <GridContainer>
       {filteredData.map((card) => (
         <Card key={card.id} onClick={() => handleCardClick(card.id, card.type)}>
@@ -73,9 +68,7 @@ function CardGrid({ filter }) {
         </Card>
       ))}
     </GridContainer>
-    </BlogProvider>
-    </VideoProvider>
-    </ThreadProvider>
+
   );
 }
 

@@ -22,7 +22,7 @@ export const FormContainer = styled.div`
 export const SectionTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 600;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
 `;
 
 export const FormGroup = styled.div`
@@ -69,19 +69,6 @@ export const Input = styled.input`
   }
 `;
 
-export const Textarea = styled.textarea`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing[2]};
-  border: 1px solid ${({ theme }) => theme.colors.gray300};
-  border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
-  background-color: ${({ theme }) => theme.colors.white};
-
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}33;
-  }
-`;
 
 export const ButtonGroup = styled.div`
   display: flex;

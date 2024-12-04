@@ -13,6 +13,8 @@ import {
   MainContent
 } from './Layout.styles';
 
+//Lets consider hidding this functionality under the burger menu
+
 const DashboardLayout = () => {
   const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const DashboardLayout = () => {
       <DashboardContainer>
         <NavBar>
           <NavContent>
-            <NavTitle>Dashboard</NavTitle>
+            <NavTitle>Dashboard</NavTitle> 
             <NavLinks>
               <Link to="/frame1" component={StyledNavLink}>Frame 1</Link>
               <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>

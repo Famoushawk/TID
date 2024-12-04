@@ -1,83 +1,94 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { VideoContext } from "../ContentPages/VideoContext";
-import { BlogContext } from "../ContentPages/BlogContext";
-import { ThreadContext } from "../Threads/ThreadContext";
+import { BlogPostService } from "../../api/services/BlogPostService";
+import { VideoService } from "../../api/services/VideoService";
+//import { ThreadService } from "../../api/services/ThreadService";
 
 const SingleContentPage = () => {
     const { id, type } = useParams();
-    const { videos, loading: videoLoading, error: videoError } = useContext(VideoContext);
-    const { blogPosts, loading: blogLoading, error: blogError } = useContext(BlogContext);
-    const { threads, loading: threadLoading, error: threadError } = useContext(ThreadContext);
-  
     const [content, setContent] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
-  
-    const loading = videoLoading || blogLoading || threadLoading;
-    const error = videoError || blogError || threadError;
+ 
   
     useEffect(() => {
-      if (loading) return;
-  
-      let selected;
-      if (type === "Video") {
-        selected = videos.find((video) => video.objectID === id);
-      } else if (type === "Blog") {
-        selected = blogPosts.find((post) => post.objectID === id);
-      } else if (type === "Debate") {
-        selected = threads.find((thread) => thread.objectID === id);
-      }
-  
-      setContent(selected);
-    }, [id, type, videos, blogPosts, threads, loading]);
-  
-    if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
-    if (error) return <ErrorMessage>Error: {error}</ErrorMessage>;
-    if (!content) return <ErrorMessage>Content not found.</ErrorMessage>;
-  
-    return (
-      <ContentContainer>
-        <BackButton onClick={() => navigate("/frame3")}>Back</BackButton>
-        <ContentTitle>{content.title}</ContentTitle>
-        <ContentType>Type: {type}</ContentType>
-        <ContentBody>{content.body || "No content available."}</ContentBody>
-      </ContentContainer>
-    );
-  };
+        const fetchContent = async () => {
+            try {
+              setLoading(true);
+      
+              let response;
+              if (type === "Video") {
+                response = await VideoService.getVideo(id); 
+              } else if (type === "Blog") {
+                response = await BlogPostService.getBlogPost(id);
+              } //else if (type === "Debate"){
+                //response = await ThreadService.getThread(id);
+              //}
+      
+              setContent(response);
+              setError(null);
+            } catch (err) {
+              console.error("Error fetching content:", err);
+              setError("Failed to load content.");
+            } finally {
+              setLoading(false);
+            }
+          };
+      
+          fetchContent();
+        }, [id, type]);
+      
+    
+      if (loading) return <LoadingMessage>Loading...</LoadingMessage>;
+      if (error) return <ErrorMessage>Error: {error}</ErrorMessage>;
+      if (!content) return <ErrorMessage>Content not found.</ErrorMessage>;
+    
+      return (
+        <ContentContainer>
+          <BackButton onClick={() => navigate("/frame3")}>Back</BackButton>
+          <ContentTitle>{content.title}</ContentTitle>
+          <ContentBody>{content.description || "No content available."}</ContentBody>
+        </ContentContainer>
+      );
+    };
   
   const ContentContainer = styled.div`
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  `;
+    border-radius: 28px;
+    background: var(--Schemes-Surface-Container-Lowest, #fff);
+    display: flex;
+    margin-top: 16px;
+    min-height: 652px;
+    flex-direction: column;
+    @media (max-width: 991px) {
+    max-width: 100%;
+  }
+`;
   
   const BackButton = styled.button`
-    margin-bottom: 20px;
-    padding: 10px 20px;
-    background-color: #ddd;
+    margin: 16px;
+    padding: 8px 16px;
+    background-color: ${({ theme }) => theme.colors.primary};
     border: none;
-    border-radius: 4px;
+    border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
     cursor: pointer;
-  
+
     &:hover {
-      background-color: #ccc;
+        background-color: ${({ theme }) => theme.colors.secondary};
     }
-  `;
+`;
   
   const ContentTitle = styled.h1`
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-bottom: 5px;
   `;
   
-  const ContentType = styled.p`
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 20px;
-  `;
   
   const ContentBody = styled.div`
     font-size: 1rem;
+    margin-left: 30px;
     line-height: 1.5;
   `;
   
