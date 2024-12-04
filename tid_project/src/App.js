@@ -1,35 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import { theme } from './styles/theme';
-import { GlobalStyles } from './styles/GlobalStyles';
-import DashboardLayout from './components/layout/DashboardLayout';
-import Frame1 from './pages/Frame1/Frame1';
-import ProfileList from './pages/ProfileList/ProfileList';
-import Frame3 from './pages/Frame3/Frame3';
-import Frame4 from './pages/Frame4/Frame4';
-import Login from './pages/Login/Login';
-import Settings from './pages/Settings/Settings';
-import apiClient from './api/client';
-import CreateContentPage from './pages/CreateContent/CreateContentPage';
-import Parse from 'parse/dist/parse.min.js';
-import DownloadBudgetTemplate from './components/DownloadBudgetTemplate';
-import SetUpGoal from './pages/SetUpGoal/SetUpGoal';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
+import { GlobalStyles } from "./styles/GlobalStyles";
+import DashboardLayout from "./components/layout/DashboardLayout";
+import Frame1 from "./pages/Frame1/Frame1";
+import ProfileList from "./pages/ProfileList/ProfileList";
+import Frame3 from "./pages/Frame3/Frame3";
+import Frame4 from "./pages/Frame4/Frame4";
+import Login from "./pages/Login/Login";
+import Settings from "./pages/Settings/Settings";
+import apiClient from "./api/client";
+import CreateContentPage from "./pages/CreateContent/CreateContentPage";
+import Parse from "parse/dist/parse.min.js";
+import DownloadBudgetTemplate from "./components/DownloadBudgetTemplate";
+import SetUpGoal from "./pages/SetUpGoal/SetUpGoal";
 
-Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'OJ2uQ7qSFn4eMg3y23jPPOq0wBnD49DEiITknteS'); 
-Parse.serverURL = 'https://parseapi.back4app.com';
+Parse.initialize("BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P", "OJ2uQ7qSFn4eMg3y23jPPOq0wBnD49DEiITknteS");
+Parse.serverURL = "https://parseapi.back4app.com";
+
+import { fetchUser } from "./api/apiClient";
+
+const getUserData = async () => {
+  try {
+    const userData = await fetchUser();
+    console.log(userData);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+  }
+};
 
 const checkUser = async () => {
-  const sessionToken = localStorage.getItem('sessionToken');
+  const sessionToken = localStorage.getItem("sessionToken");
   if (sessionToken) {
     try {
-      const response = await apiClient.get('/users/me');
+      console.log("Session token found:", sessionToken);
+      await apiClient.get("/users/me");
+      console.log("API call successful");
       return true;
     } catch (error) {
-      localStorage.removeItem('sessionToken');
+      console.error("Error in API call:", error.message);
+      localStorage.removeItem("sessionToken");
       return false;
     }
   }
+  console.log("No session token found");
   return false;
 };
 
@@ -45,8 +60,14 @@ const ProtectedRoute = ({ children }) => {
     verify();
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      getUserData();
+    }
+  }, [isAuthenticated]);
+
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated) {
@@ -68,7 +89,7 @@ const PublicRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (isAuthenticated) {
@@ -94,7 +115,7 @@ function App() {
               <Route path="settings" element={<Settings />} />
               <Route path="create-content" element={<CreateContentPage />} />
               <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
-              <Route path="/set-up-goal" element={<SetUpGoal />} />
+              <Route path="set-up-goal" element={<SetUpGoal />} />
               <Route path="expenses-diagram" element={<ExpensePage />} />
             </Route>
           </Routes>
