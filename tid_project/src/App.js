@@ -61,12 +61,6 @@ const ProtectedRoute = ({ children }) => {
     verify();
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      getUserData();
-    }
-  }, [isAuthenticated]);
-
   if (isAuthenticated === null) {
     return <div>Loading...</div>;
   }
@@ -107,16 +101,21 @@ function App() {
       <div>
         <BrowserRouter>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<DashboardLayout />}>
-              <Route path="frame1" element={<Frame1 />} />
-              <Route path="profilelist" element={<ProfileList />} /> 
-              <Route path="Threads" element={<Threads />} /> 
-              <Route path="settings" element={<Settings />} />
-              <Route path="create-content" element={<CreateContentPage />} />
-              <Route path="/content/:type/:id" element={<SingleContentPage />} /> 
-              <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
-              <Route path="set-up-goal" element={<SetUpGoal />} />
+            
+            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<DashboardLayout />}>
+                <Route path="frame1" element={<Frame1 />} />
+                <Route path="profilelist" element={<ProfileList />} />
+                <Route path="threads" element={<Threads />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="create-content" element={<CreateContentPage />} />
+                <Route path="/content/:type/:id" element={<SingleContentPage />} />
+                <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
+                <Route path="set-up-goal" element={<SetUpGoal />} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
