@@ -12,6 +12,7 @@ import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
 import SingleContentPage from './pages/ContentPages/SingleContentPage';
+import ProfileList from './pages/ProfileList/ProfileList';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
@@ -97,7 +98,7 @@ function App() {
             >
               <Route index element={<Navigate to="/frame1" replace />} />
               <Route path="frame1" element={<Frame1 />} />
-              {/*  <Route path="frame2" element={<Frame2 />} /> */}
+              <Route path="profilelist" element={<ProfileList />} />
               <Route path="frame3" element={<Frame3 />} />
               <Route path="Threads" element={<Threads />} />
               <Route path="settings" element={<Settings />} />

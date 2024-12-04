@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
+import ProfileList from '../../pages/ProfileList/ProfileList';
 import NavigationBar from './NavigationBar';
 import { AuthService } from '../../api/services/AuthService';
 import {
@@ -35,7 +36,7 @@ const DashboardLayout = () => {
             <NavTitle>Dashboard</NavTitle>
             <NavLinks>
               <Link to="/frame1" component={StyledNavLink}>Frame 1</Link>
-              <Link to="/frame2" component={StyledNavLink}>Frame 2</Link>
+              <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
               <Link to="/frame3" component={StyledNavLink}>Frame 3</Link>
               <Link to="/Threads" component={StyledNavLink}>Threads</Link>
               <StyledNavLink as="button" onClick={handleLogout}>

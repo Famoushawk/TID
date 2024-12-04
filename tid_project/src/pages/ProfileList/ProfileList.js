@@ -1,11 +1,11 @@
-import { WhiteBackground } from '../../components/layout/Layout.styles';
 import React from 'react';
+import { WhiteBackground } from '../../components/layout/Layout.styles';
 import Profile from './Profile';
 
-const ProfileList = ({ children }) => {
+const ProfileList = () => {
   return (
     <WhiteBackground>
-      {children || <Profile />}
+      <Profile />
     </WhiteBackground>
   );
 };

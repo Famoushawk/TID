@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import ProfileOptions from "./ProfileOptions";
-import { AuthService } from '../../services/AuthService';
+import { AuthService } from '../../api/services/AuthService';
 
 const profileData = [
   {
     title: "Budget Templates",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./wallet.png",
+    imageUrl: "/api/placeholder/80/80", // Updated to use placeholder image
   },
   {
     title: "Set goal for saving up",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./target.png",
+    imageUrl: "/api/placeholder/80/80", // Updated to use placeholder image
   },
   {
     title: "Diagram of expenses",
     description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "./calculator.png",
+    imageUrl: "/api/placeholder/80/80", // Updated to use placeholder image
   },
 ];
 
