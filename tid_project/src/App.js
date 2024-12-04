@@ -7,11 +7,12 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import Frame1 from "./pages/Frame1/Frame1";
 import ProfileList from "./pages/ProfileList/ProfileList";
 import Frame3 from "./pages/Frame3/Frame3";
-import Frame4 from "./pages/Frame4/Frame4";
+import Threads from "./pages/Threads/Threads";
 import Login from "./pages/Login/Login";
 import Settings from "./pages/Settings/Settings";
 import apiClient from "./api/client";
 import CreateContentPage from "./pages/CreateContent/CreateContentPage";
+import SingleContentPage from "./pages/ContentPages/SingleContentPage";
 import Parse from "parse/dist/parse.min.js";
 import DownloadBudgetTemplate from "./components/DownloadBudgetTemplate";
 import SetUpGoal from "./pages/SetUpGoal/SetUpGoal";
@@ -109,14 +110,14 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<DashboardLayout />}>
               <Route path="frame1" element={<Frame1 />} />
-              <Route path="profile-list" element={<ProfileList />} />
+              <Route path="profilelist" element={<ProfileList />} /> {/* Changed route path to match timestamps */}
               <Route path="frame3" element={<Frame3 />} />
-              <Route path="frame4" element={<Frame4 />} />
+              <Route path="Threads" element={<Threads />} /> {/* Threads page */}
               <Route path="settings" element={<Settings />} />
               <Route path="create-content" element={<CreateContentPage />} />
+              <Route path="/content/:type/:id" element={<SingleContentPage />} /> {/* New content page route */}
               <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
               <Route path="set-up-goal" element={<SetUpGoal />} />
-              <Route path="expenses-diagram" element={<ExpensePage />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -4,11 +4,15 @@ import { BlogPostService } from "../../api/services/BlogPostService";
 import { VideoService } from "../../api/services/VideoService";
 import { ThreadService } from "../../api/services/ThreadService";
 import { formatTimeAgo } from "../../components/utils/dateUtils";
+import { useNavigate } from "react-router-dom";
+import { VideoProvider } from "../ContentPages/VideoContext";
+import { ThreadProvider } from "../Threads/ThreadContext";
+import { BlogProvider } from "../ContentPages/BlogContext";
 
 function CardGrid({ filter }) {
   const [cardData, setCardData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadData() {
@@ -21,16 +25,19 @@ function CardGrid({ filter }) {
           title: video.title,
           date: formatTimeAgo(video.createdAt),
           type: "Video",
+          id: video.objectID
         })),
         ...blogPosts.map(blogpost => ({
           title: blogpost.title,
           date: formatTimeAgo(blogpost.createdAt), 
           type: "Blog",
+          id: blogpost.objectID
         })),
         ...threads.map(thread => ({
           title: thread.title,
           date: formatTimeAgo(thread.createdAt),
-          type: "Debate"
+          type: "Debate",
+          id: thread.objectID
         }))
       ];
 
@@ -47,11 +54,17 @@ function CardGrid({ filter }) {
     }
   }, [filter, cardData]);
 
+  const handleCardClick = (id, type) => {
+    navigate(`/content/${type}/${id}`);
+  };
 
   return (
+    <ThreadProvider>
+    <VideoProvider>
+    <BlogProvider>
     <GridContainer>
-      {filteredData.map((card, index) => (
-        <Card key={index}>
+      {filteredData.map((card) => (
+        <Card key={card.id} onClick={() => handleCardClick(card.id, card.type)}>
           <CardImage src="https://cdn.builder.io/api/v1/image/assets/TEMP/2d23df4276f92df3f4c284ccb58821f758e6ad1938c526deb3aedd30f0d776ad?placeholderIfAbsent=true&apiKey=d8134f90761a4e9db589863aef8c0d7c" alt={card.title} />
           <CardContent>
             <CardTitle>{card.title}</CardTitle>
@@ -60,6 +73,9 @@ function CardGrid({ filter }) {
         </Card>
       ))}
     </GridContainer>
+    </BlogProvider>
+    </VideoProvider>
+    </ThreadProvider>
   );
 }
 

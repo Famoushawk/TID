@@ -11,8 +11,9 @@ const NavigationBar = ({ onAddButtonClick }) => {
   const renderButton = () => {
     switch (location.pathname) {
       case '/frame1':
-      case '/ProfileList':
+      case '/frame2': // Ensure this matches the actual route
       case '/frame4':
+      case '/Threads': // Added '/Threads' as in previous code
         return <SettingsButton />;
       case '/frame3':
         return <AddButton onClick={onAddButtonClick} />;

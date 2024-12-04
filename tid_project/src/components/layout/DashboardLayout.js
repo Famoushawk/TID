@@ -35,9 +35,9 @@ const DashboardLayout = () => {
             <NavTitle>Dashboard</NavTitle>
             <NavLinks>
               <Link to="/frame1" component={StyledNavLink}>Frame 1</Link>
-              <StyledNavLink as={Link} to="/profile-list">Profile List</StyledNavLink> 
+              <StyledNavLink as={Link} to="/profilelist">Profile List</StyledNavLink> {/* Updated route */}
               <Link to="/frame3" component={StyledNavLink}>Frame 3</Link>
-              <Link to="/frame4" component={StyledNavLink}>Frame 4</Link>
+              <Link to="/Threads" component={StyledNavLink}>Threads</Link>
               <StyledNavLink as="button" onClick={handleLogout}>
                 Logout
               </StyledNavLink>

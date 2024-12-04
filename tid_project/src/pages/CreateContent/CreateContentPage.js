@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { BlogPostService } from '../../api/services/BlogPostService'
-import { VideoService } from "../../api/services/VideoService";
-import { ThreadService } from "../../api/services/ThreadService";
+import { ThreadProvider } from "../Threads/ThreadContext"
 import { useNavigate } from 'react-router-dom';
 import { 
   ContentPageContainer, 
@@ -15,6 +13,8 @@ import {
   Button, 
   ButtonGroup,
 } from './CreateContent.styles';
+import { BlogProvider } from "../ContentPages/BlogContext";
+import { VideoProvider } from "../ContentPages/VideoContext";
 
 
 const CreateContentPage = () => {
@@ -31,11 +31,11 @@ const CreateContentPage = () => {
     setLoading(true);
     try {
       if (type === "blog") {
-        await BlogPostService.createBlogPost(title, content);
+        await BlogProvider.createBlogPost(title, content);
       } else if (type === "video") {
-        await VideoService.createVideo(title, content);
+        await VideoProvider.createVideo(title, content);
       } else if (type === "debate") {
-        await ThreadService.createThread(title, content);
+        await ThreadProvider.createThread(title, content);
       }
       setTitle("");
       setContent("");
