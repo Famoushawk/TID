@@ -110,12 +110,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<DashboardLayout />}>
               <Route path="frame1" element={<Frame1 />} />
-              <Route path="profilelist" element={<ProfileList />} /> {/* Changed route path to match timestamps */}
-              <Route path="frame3" element={<Frame3 />} />
-              <Route path="Threads" element={<Threads />} /> {/* Threads page */}
+              <Route path="profilelist" element={<ProfileList />} /> 
+              <Route path="Threads" element={<Threads />} /> 
               <Route path="settings" element={<Settings />} />
               <Route path="create-content" element={<CreateContentPage />} />
-              <Route path="/content/:type/:id" element={<SingleContentPage />} /> {/* New content page route */}
+              <Route path="/content/:type/:id" element={<SingleContentPage />} /> 
               <Route path="download-budget-template" element={<DownloadBudgetTemplate />} />
               <Route path="set-up-goal" element={<SetUpGoal />} />
             </Route>

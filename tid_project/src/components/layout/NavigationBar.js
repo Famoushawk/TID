@@ -13,7 +13,7 @@ const NavigationBar = ({ onAddButtonClick }) => {
       case '/frame1':
       case '/ProfileList':  
       case '/frame4':
-      case '/Threads':  // Included /Threads as previously
+      case '/Threads':  
         return <SettingsButton />;
       case '/frame3':
         return <AddButton onClick={onAddButtonClick} />;
