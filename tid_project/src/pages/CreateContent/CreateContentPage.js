@@ -8,7 +8,6 @@ import {
   FormGroup, 
   Label, 
   Input, 
-  Textarea, 
   Button, 
   ButtonGroup,
 } from './CreateContent.styles';
