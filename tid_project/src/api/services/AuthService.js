@@ -54,5 +54,27 @@ export const AuthService = {
       console.error('Error changing password:', error.response?.data || error);
       throw error;
     }
-  }
+  },
+
+  async signup(username, email, password) {
+    try {
+      const response = await apiClient.post(ENDPOINTS.SIGNUP, {
+        username,
+        email,
+        password
+      });
+      
+      // After successful signup, log the user in automatically
+      if (response.data) {
+        await this.login(username, password);
+      }
+      
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data.error || 'Signup failed');
+      }
+      throw new Error('Signup failed - please try again');
+    }
+  },
 };
