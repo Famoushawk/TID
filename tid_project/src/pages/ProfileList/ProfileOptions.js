@@ -1,26 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
-const ProfileOptions = ({ title, description, imageUrl, onClick }) => {
-  const [showGoalInput, setShowGoalInput] = useState(false);
-  const [goal, setGoal] = useState("");
-
-  const handleGoalSubmit = () => {
-    alert(`Your new goal "${goal}" has been set!`);
-    setShowGoalInput(false);
-    setGoal("");
-  };
-
-  const handleGoalChange = (e) => {
-    setGoal(e.target.value);
-  };
-
+const ProfileOptions = ({ title, description, imageUrl }) => {
   return (
     <ListOptions>
-      <StateLayer onClick={onClick}>
+      <StateLayer>
         <LeadingElement>
           <ImageWrapper>
-            <Icon src={imageUrl} alt={`${title} icon`} />
+            <Icon src={imageUrl} alt="" />
           </ImageWrapper>
         </LeadingElement>
         <Content>
@@ -33,28 +20,6 @@ const ProfileOptions = ({ title, description, imageUrl, onClick }) => {
       <DividerWrapper>
         <Divider />
       </DividerWrapper>
-
-      {title === "Set a goal for saving up" && (
-        <GoalContainer>
-          {showGoalInput ? (
-            <>
-              <GoalInput
-                type="text"
-                placeholder="Please, enter your saving goal"
-                value={goal}
-                onChange={handleGoalChange}
-              />
-              <GoalButton onClick={handleGoalSubmit} disabled={!goal.trim()}>
-                Save Goal
-              </GoalButton>
-            </>
-          ) : (
-            <GoalButton onClick={() => setShowGoalInput(true)}>
-              Set up Goal
-            </GoalButton>
-          )}
-        </GoalContainer>
-      )}
     </ListOptions>
   );
 };
@@ -65,8 +30,6 @@ const ListOptions = styled.li`
   width: 100%;
   flex-direction: column;
   justify-content: start;
-  cursor: pointer;
-
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -80,15 +43,10 @@ const StateLayer = styled.button`
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 12px 16px;
-  text-align: left;
-  background: none;
-  border: none;
+  text-align: left; 
+  background: none; 
+  border: none; 
   cursor: pointer;
-
-  &:hover {
-    background: #f0f0f0;
-  }
-
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -124,7 +82,6 @@ const Content = styled.div`
   justify-content: start;
   flex: 1;
   flex-basis: 0%;
-
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -138,12 +95,9 @@ const HeadlineAndReviews = styled.h2`
   flex: 1;
   width: 100%;
   gap: 8px;
-  color: #1d1b20;
-  letter-spacing: 0px;
-  font-size: 22px;
-  line-height: 28px;
-  font-family: Roboto, sans-serif;
-
+  color: var(--M3-sys-light-on-surface, var(--Schemes-On-Surface, #1d1b20));
+  letter-spacing: var(--Title-Large-Tracking, 0px);
+  font: var(--Title-Large-Size, 22px) / var(--Title-Large-Line-Height, 28px) var(--Title-Large-Font, Roboto);
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -154,12 +108,23 @@ const SupportingText = styled.div`
   margin-top: 8px;
   width: 100%;
   flex-direction: column;
-  color: #49454f;
-  letter-spacing: 0.25px;
-  font-size: 14px;
-  line-height: 20px;
-  font-family: Roboto, sans-serif;
+  color: var(
+    --M3-sys-light-on-surface-variant,
+    var(--Schemes-On-Surface-Variant, #49454f)
+  );
+  letter-spacing: var(--Body-Medium-Tracking, 0.25px);
+  justify-content: start;
+  font: var(--Body-Medium-Size, 14px) / var(--Body-Medium-Line-Height, 20px) var(--Body-Medium-Font, Roboto);
+  @media (max-width: 991px) {
+    max-width: 100%;
+  }
+`;
 
+const Details = styled.p`
+  align-self: stretch;
+  flex: 1;
+  width: 100%;
+  gap: 4px;
   @media (max-width: 991px) {
     max-width: 100%;
   }
@@ -169,71 +134,30 @@ const Description = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
-
   @media (max-width: 991px) {
     max-width: 100%;
   }
 `;
 
 const DividerWrapper = styled.div`
+  transform: rotate(8.742277657347563e-8rad);
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: center;
   padding: 0 16px;
-
   @media (max-width: 991px) {
     max-width: 100%;
   }
 `;
 
 const Divider = styled.hr`
-  background: #cac4d0;
+  background: var(--Schemes-Outline-Variant, #cac4d0);
   min-height: 1px;
   width: 100%;
   border: 1px solid rgba(202, 196, 208, 1);
-
   @media (max-width: 991px) {
     max-width: 100%;
-  }
-`;
-
-const GoalContainer = styled.div`
-  margin-top: 16px;
-  padding: 16px;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-const GoalInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  width: 100%;
-`;
-
-const GoalButton = styled.button`
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
   }
 `;
 
