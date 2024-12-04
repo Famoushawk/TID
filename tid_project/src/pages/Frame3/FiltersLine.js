@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function FiltersLine({ filterOptions = ["All", "Debate", "Video", "Blog"], currentFilter, onFilterChange }) {
+function FiltersLine({ filterOptions = ["All", "Video", "Blog"], currentFilter, onFilterChange }) { //Perhaps add Debate as filter option again
   return (
     <FilterContainer>
       {filterOptions.map((option, index) => (

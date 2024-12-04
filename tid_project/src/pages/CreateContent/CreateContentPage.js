@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ThreadProvider } from "../Frame4/ThreadContext"
 import { useNavigate } from 'react-router-dom';
 import { 
   ContentPageContainer, 
@@ -13,8 +12,9 @@ import {
   Button, 
   ButtonGroup,
 } from './CreateContent.styles';
-import { BlogProvider } from "../ContentPages/BlogContext";
-import { VideoProvider } from "../ContentPages/VideoContext";
+import { BlogPostService } from "../../api/services/BlogPostService";
+import { VideoService } from "../../api/services/VideoService";
+import { ThreadService } from "../../api/services/ThreadService";
 
 
 const CreateContentPage = () => {
@@ -31,11 +31,11 @@ const CreateContentPage = () => {
     setLoading(true);
     try {
       if (type === "blog") {
-        await BlogProvider.createBlogPost(title, content);
+        await BlogPostService.createBlogPost(title, content);
       } else if (type === "video") {
-        await VideoProvider.createVideo(title, content);
+        await VideoService.createVideo(title, content);
       } else if (type === "debate") {
-        await ThreadProvider.createThread(title, content);
+        await ThreadService.createThread(title, content);
       }
       setTitle("");
       setContent("");
@@ -82,7 +82,7 @@ const CreateContentPage = () => {
             <SectionTitle>Content</SectionTitle>
             <Label>
               Enter Content:
-              <Textarea 
+              <Input
                 value={content} 
                 onChange={(e) => setContent(e.target.value)} 
                 required 
