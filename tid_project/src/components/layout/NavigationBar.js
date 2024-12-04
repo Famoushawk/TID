@@ -4,6 +4,7 @@ import AddButton from './AddButton';
 import BurgerMenu from './BurgerMenu';
 import SettingsButton from './SettingsButton';
 import { NavBarContainer } from './Layout.styles';
+import AddButtonContentPage from './AddButtonContentPage';
 
 const NavigationBar = ({ onAddButtonClick }) => {
   const location = useLocation();
@@ -15,7 +16,7 @@ const NavigationBar = ({ onAddButtonClick }) => {
       case '/Threads':
         return <SettingsButton />;
       case '/frame3':
-        return <AddButton onClick={onAddButtonClick} />;
+        return <AddButtonContentPage onClick={onAddButtonClick} />;
       default:
         return null;
     }
