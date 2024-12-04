@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
-import ProfileList from '../../pages/ProfileList/ProfileList';
 import NavigationBar from './NavigationBar';
 import { AuthService } from '../../api/services/AuthService';
 import {
