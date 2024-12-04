@@ -1,32 +1,114 @@
 import { WhiteBackground } from '../../components/layout/Layout.styles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Parse from 'parse';
+
+// Initialize Parse
+Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
+Parse.serverURL = 'https://parseapi.back4app.com/';
 
 const Frame1 = () => {
-  const [balance, setBalance] = useState(1000); // Startværdi for kontobalance
+  const [balance, setBalance] = useState(0); // Start balance fetched from Back4App
   const [expenses, setExpenses] = useState([]);
-  const [expenseCategories, setExpenseCategories] = useState(['Mad', 'Transport', 'Underholdning', 'Andet']);
+  const [expenseCategories, setExpenseCategories] = useState([]);
   const [form, setForm] = useState({ category: '', amount: '' });
   const [newCategory, setNewCategory] = useState('');
-  const [manualBalance, setManualBalance] = useState(''); // For manuel opdatering af balance
+  const [manualBalance, setManualBalance] = useState('');
 
-  // Håndter ændringer i input
+  // Fetch initial data from Back4App
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      const categories = await fetchCategories();
+      const currentBalance = await fetchBalance();
+      const currentExpenses = await fetchExpenses();
+      setExpenseCategories(categories);
+      setBalance(currentBalance);
+      setExpenses(currentExpenses);
+    };
+
+    fetchInitialData();
+  }, []);
+
+  // Fetch balance from Back4App
+  const fetchBalance = async () => {
+    const query = new Parse.Query('Balance');
+    const balanceObj = await query.first();
+    return balanceObj ? balanceObj.get('amount') : 0;
+  };
+
+  // Update balance in Back4App
+  const updateBalance = async (newBalance) => {
+    const query = new Parse.Query('Balance');
+    const balanceObj = await query.first();
+
+    if (balanceObj) {
+      balanceObj.set('amount', newBalance);
+      await balanceObj.save();
+    } else {
+      const Balance = Parse.Object.extend('Balance');
+      const newBalanceObj = new Balance();
+      newBalanceObj.set('amount', newBalance);
+      await newBalanceObj.save();
+    }
+  };
+
+  // Fetch expenses from Back4App
+  const fetchExpenses = async () => {
+    const query = new Parse.Query('Expense');
+    const results = await query.find();
+    return results.map(expense => ({
+      category: expense.get('category'),
+      amount: expense.get('amount'),
+    }));
+  };
+
+  // Add an expense to Back4App
+  const addExpense = async (category, amount) => {
+    const Expense = Parse.Object.extend('Expense');
+    const expense = new Expense();
+    expense.set('category', category);
+    expense.set('amount', parseFloat(amount));
+    await expense.save();
+  };
+
+  // Fetch categories from Back4App
+  const fetchCategories = async () => {
+    const query = new Parse.Query('ExpenseCategory');
+    const results = await query.find();
+    return results.map(category => category.get('name'));
+  };
+
+  // Add a new category to Back4App
+  const addCategory = async (newCategory) => {
+    const query = new Parse.Query('ExpenseCategory');
+    query.equalTo('name', newCategory);
+    const existing = await query.first();
+
+    if (!existing) {
+      const ExpenseCategory = Parse.Object.extend('ExpenseCategory');
+      const category = new ExpenseCategory();
+      category.set('name', newCategory);
+      await category.save();
+    } else {
+      alert('Kategorien eksisterer allerede.');
+    }
+  };
+
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  // Håndter ændringer i input for ny kategori
   const handleCategoryChange = (e) => {
     setNewCategory(e.target.value);
   };
 
-  // Håndter ændringer i manuel balance
   const handleBalanceChange = (e) => {
     setManualBalance(e.target.value);
   };
 
-  // Tilføj en udgift
-  const addExpense = (e) => {
+  // Handle adding expense
+  const handleAddExpense = async (e) => {
     e.preventDefault();
     const { category, amount } = form;
 
@@ -35,33 +117,38 @@ const Frame1 = () => {
       return;
     }
 
-    const newExpense = { category, amount: parseFloat(amount) };
-    setExpenses([...expenses, newExpense]);
-    setBalance(balance - parseFloat(amount)); // Opdater balancen
-    setForm({ category: '', amount: '' }); // Nulstil formular
+    await addExpense(category, amount);
+    const updatedBalance = balance - parseFloat(amount);
+    await updateBalance(updatedBalance);
+
+    setBalance(updatedBalance);
+    setExpenses([...expenses, { category, amount: parseFloat(amount) }]);
+    setForm({ category: '', amount: '' });
   };
 
-  // Tilføj ny udgiftstype
-  const addCategory = (e) => {
-    e.preventDefault();
-    if (newCategory && !expenseCategories.includes(newCategory)) {
-      setExpenseCategories([...expenseCategories, newCategory]);
-      setNewCategory('');
-    } else {
-      alert('Kategorien eksisterer allerede eller er tom.');
-    }
-  };
-
-  // Opdater kontobalancen manuelt
-  const updateBalance = (e) => {
+  // Handle updating balance
+  const handleUpdateBalance = async (e) => {
     e.preventDefault();
     const newBalance = parseFloat(manualBalance);
 
     if (!isNaN(newBalance) && newBalance >= 0) {
+      await updateBalance(newBalance);
       setBalance(newBalance);
-      setManualBalance(''); // Nulstil inputfeltet
+      setManualBalance('');
     } else {
       alert('Indtast venligst et gyldigt beløb.');
+    }
+  };
+
+  // Handle adding category
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    if (newCategory && !expenseCategories.includes(newCategory)) {
+      await addCategory(newCategory);
+      setExpenseCategories([...expenseCategories, newCategory]);
+      setNewCategory('');
+    } else {
+      alert('Kategorien eksisterer allerede eller er tom.');
     }
   };
 
@@ -86,7 +173,7 @@ const Frame1 = () => {
         </div>
 
         {/* Formular til manuel opdatering af kontobalance */}
-        <form onSubmit={updateBalance} style={{ marginBottom: '20px' }}>
+        <form onSubmit={handleUpdateBalance} style={{ marginBottom: '20px' }}>
           <h3>Opdater kontobalance</h3>
           <input
             type="number"
@@ -109,7 +196,7 @@ const Frame1 = () => {
         </form>
 
         {/* Tilføj udgift */}
-        <form onSubmit={addExpense} style={{ marginBottom: '20px' }}>
+        <form onSubmit={handleAddExpense} style={{ marginBottom: '20px' }}>
           <div>
             <select
               name="category"
@@ -147,7 +234,7 @@ const Frame1 = () => {
         </form>
 
         {/* Tilføj ny kategori */}
-        <form onSubmit={addCategory} style={{ marginBottom: '20px' }}>
+        <form onSubmit={handleAddCategory} style={{ marginBottom: '20px' }}>
           <h3>Tilføj ny udgiftstype</h3>
           <input
             type="text"
