@@ -39,7 +39,7 @@ const CreateContentPage = () => {
       setTitle("");
       setContent("");
 
-      navigate("/frame3");
+      navigate("/contentpage");
     } catch (error) {
       console.error("Error creating content:", error);
     } finally {

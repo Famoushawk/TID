@@ -22,9 +22,7 @@ const SingleContentPage = () => {
           response = await VideoService.getVideo(id);
         } else if (type === "Blog") {
           response = await BlogPostService.getBlogPost(id);
-        } //else if (type === "Debate"){
-        //response = await ThreadService.getThread(id);
-        //}
+        }
 
         setContent(response);
         setError(null);
@@ -48,7 +46,7 @@ const SingleContentPage = () => {
     <ContentContainer>
       <BackButton onClick={() => navigate("/contentpage")}>Back</BackButton>
       <ContentTitle>{content.title}</ContentTitle>
-      <ContentBody>{content.description || "No content available."}</ContentBody>
+      <ContentBody>{content.content || "No content available."}</ContentBody>
     </ContentContainer>
   );
 };
