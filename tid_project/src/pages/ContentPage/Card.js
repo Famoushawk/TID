@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BlogPostService } from "../../api/services/BlogPostService";
 import { VideoService } from "../../api/services/VideoService";
-//import { ThreadService } from "../../api/services/ThreadService";
 import { formatTimeAgo } from "../../components/utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 
@@ -13,9 +12,8 @@ function CardGrid({ filter }) {
 
   useEffect(() => {
     async function loadData() {
-        const videos = await VideoService.getVideoes();
-        const blogPosts = await BlogPostService.getBlogPosts();
-        //const threads = await ThreadService.getThreads();
+      const videos = await VideoService.getVideoes();
+      const blogPosts = await BlogPostService.getBlogPosts();
 
       const combinedData = [
         ...videos.map(video => ({
@@ -26,28 +24,22 @@ function CardGrid({ filter }) {
         })),
         ...blogPosts.map(blogpost => ({
           title: blogpost.title,
-          date: formatTimeAgo(blogpost.createdAt), 
+          date: formatTimeAgo(blogpost.createdAt),
           type: "Blog",
           id: blogpost.objectId
         })),
-        //...threads.map(thread => ({
-        //  title: thread.title,
-        // date: formatTimeAgo(thread.createdAt),
-        //  type: "Debate",
-        //  id: thread.objectID
-        //}))
       ];
 
       setCardData(combinedData);
     }
     loadData();
-  }, []); 
+  }, []);
 
   useEffect(() => {
-    if (filter === "All"){
+    if (filter === "All") {
       setFilteredData(cardData);
     } else {
-      setFilteredData(cardData.filter( card => card.type === filter))
+      setFilteredData(cardData.filter(card => card.type === filter))
     }
   }, [filter, cardData]);
 

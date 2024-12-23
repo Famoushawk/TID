@@ -59,7 +59,7 @@ export const Input = styled.input`
   padding: ${({ theme }) => theme.spacing[2]};
   border: 1px solid ${({ theme }) => theme.colors.gray300};
   border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
-  background-color: ${({ disabled, theme }) => 
+  background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.gray100 : theme.colors.white};
 
   &:focus {

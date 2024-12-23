@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { 
-  ContentPageContainer, 
-  PageTitle, 
-  FormContainer, 
-  SectionTitle, 
-  FormGroup, 
-  Label, 
-  Input, 
-  Button, 
+import {
+  ContentPageContainer,
+  PageTitle,
+  FormContainer,
+  SectionTitle,
+  FormGroup,
+  Label,
+  Input,
+  Button,
   ButtonGroup,
 } from './CreateContent.styles';
 import { BlogPostService } from "../../api/services/BlogPostService";
@@ -42,8 +42,8 @@ const CreateContentPage = () => {
       navigate("/frame3");
     } catch (error) {
       console.error("Error creating content:", error);
-    } finally{
-        setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +55,7 @@ const CreateContentPage = () => {
           <FormGroup>
             <SectionTitle>Type</SectionTitle>
             <Label>
-              Select Content Type:  
+              Select Content Type:
               <select value={type} onChange={(e) => setType(e.target.value)}>
                 <option value="blog">Blog Post</option>
                 <option value="video">Video</option>
@@ -68,11 +68,11 @@ const CreateContentPage = () => {
             <SectionTitle>Title</SectionTitle>
             <Label>
               Enter Title:
-              <Input 
-                type="text" 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
-                required 
+              <Input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
               />
             </Label>
           </FormGroup>
@@ -82,9 +82,9 @@ const CreateContentPage = () => {
             <Label>
               Enter Content:
               <Input
-                value={content} 
-                onChange={(e) => setContent(e.target.value)} 
-                required 
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
               />
             </Label>
           </FormGroup>

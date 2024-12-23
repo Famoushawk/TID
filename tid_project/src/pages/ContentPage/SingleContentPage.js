@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { BlogPostService } from "../../api/services/BlogPostService";
 import { VideoService } from "../../api/services/VideoService";
-//import { ThreadService } from "../../api/services/ThreadService";
 
 const SingleContentPage = () => {
   const { id, type } = useParams();
