@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import AddButton from './AddButton';
 import BurgerMenu from './BurgerMenu';
 import SettingsButton from './SettingsButton';
 import { NavBarContainer } from './Layout.styles';
@@ -15,7 +14,7 @@ const NavigationBar = ({ onAddButtonClick }) => {
       case '/frame2':
       case '/Threads':
         return <SettingsButton />;
-      case '/frame3':
+      case '/contentpage':
         return <AddButtonContentPage onClick={onAddButtonClick} />;
       default:
         return null;

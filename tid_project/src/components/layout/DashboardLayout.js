@@ -36,7 +36,7 @@ const DashboardLayout = () => {
             <NavLinks>
               <Link to="/frame1" component={StyledNavLink}>Budget</Link>
               <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
-              <Link to="/frame3" component={StyledNavLink}>Content</Link>
+              <Link to="/contentpage" component={StyledNavLink}>Content</Link>
               <Link to="/Threads" component={StyledNavLink}>Threads</Link>
               <StyledNavLink as="button" onClick={handleLogout}>
                 Logout

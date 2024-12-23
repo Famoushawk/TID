@@ -3,7 +3,7 @@ import { WhiteBackground } from '../../components/layout/Layout.styles';
 import FiltersLine from "./FiltersLine";
 import CardGrid from "./Card";
 
-const Frame3 = () => {
+const ContentPage = () => {
   const [filter, setFilter] = useState("All");
 
   return (
@@ -14,4 +14,4 @@ const Frame3 = () => {
   );
 };
 
-export default Frame3;
+export default ContentPage;
