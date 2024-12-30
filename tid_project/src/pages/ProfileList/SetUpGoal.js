@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
+import { saveGoal, getSavedGoal } from '../api/goalService';
 
 const GoalContainer = styled.div`
   max-width: 400px;
@@ -45,9 +46,17 @@ const GoalButton = styled.button`
 `;
 
 const SetUpGoal = () => {
-  const theme = useTheme(); 
+  const theme = useTheme();
   const [goal, setGoal] = useState('');
   const [submittedGoal, setSubmittedGoal] = useState(null);
+
+
+  useEffect(() => {
+    const saved = getSavedGoal();
+    if (saved) {
+      setSubmittedGoal(saved); 
+    }
+  }, []);
 
   const handleGoalChange = (e) => {
     setGoal(e.target.value);
@@ -55,9 +64,10 @@ const SetUpGoal = () => {
 
   const handleSubmitGoal = () => {
     if (goal.trim()) {
-      setSubmittedGoal(goal);
-      setGoal('');
-      alert(`Your goal has been set to: ${goal}`); 
+      const savedGoal = saveGoal(goal); 
+      setSubmittedGoal(savedGoal); 
+      setGoal(''); 
+      alert(`Your goal has been set to: ${savedGoal}`);
     }
   };
 
@@ -86,3 +96,4 @@ const SetUpGoal = () => {
 };
 
 export default SetUpGoal;
+
