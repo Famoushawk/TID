@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 At the login screen you will have the option to create a new user.
 
-We have also create a user for you, as a fallback, in case something didt work
+We have also create a user for you, as a fallback, in case something doesn't work
 
 Username: Test_Tenant
 Password: Passwordfortenant2025
