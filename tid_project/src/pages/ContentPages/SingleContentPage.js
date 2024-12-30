@@ -23,9 +23,7 @@ const SingleContentPage = () => {
                 response = await VideoService.getVideo(id); 
               } else if (type === "Blog") {
                 response = await BlogPostService.getBlogPost(id);
-              } //else if (type === "Debate"){
-                //response = await ThreadService.getThread(id);
-              //}
+              }
       
               setContent(response);
               setError(null);

@@ -15,7 +15,6 @@ function CardGrid({ filter }) {
     async function loadData() {
         const videos = await VideoService.getVideoes();
         const blogPosts = await BlogPostService.getBlogPosts();
-        //const threads = await ThreadService.getThreads();
 
       const combinedData = [
         ...videos.map(video => ({
@@ -30,12 +29,6 @@ function CardGrid({ filter }) {
           type: "Blog",
           id: blogpost.objectId
         })),
-        //...threads.map(thread => ({
-        //  title: thread.title,
-        // date: formatTimeAgo(thread.createdAt),
-        //  type: "Debate",
-        //  id: thread.objectID
-        //}))
       ];
 
       setCardData(combinedData);
