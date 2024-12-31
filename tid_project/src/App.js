@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
+import { createGlobalStyle } from 'styled-components';
 import { GlobalStyles } from './styles/GlobalStyles';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Frame1 from './pages/Frame1/Frame1';
@@ -13,6 +14,14 @@ import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
 import SingleContentPage from './pages/ContentPages/SingleContentPage';
 import ProfileList from './pages/ProfileList/ProfileList';
+
+const GlobalStyle = createGlobalStyle`
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
@@ -41,7 +50,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated) {
@@ -63,7 +72,7 @@ const PublicRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (isAuthenticated) {
@@ -76,20 +85,20 @@ const PublicRoute = ({ children }) => {
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles />
+      <GlobalStyle />
       <div>
         <BrowserRouter>
           <Routes>
-            <Route 
-              path="/login" 
+            <Route
+              path="/login"
               element={
                 <PublicRoute>
                   <Login />
                 </PublicRoute>
-              } 
+              }
             />
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
                 <ProtectedRoute>
                   <DashboardLayout />
@@ -103,7 +112,7 @@ function App() {
               <Route path="Threads" element={<Threads />} />
               <Route path="settings" element={<Settings />} />
               <Route path="/create-content" element={<CreateContentPage />} />
-              <Route path="/content/:type/:id" element={<SingleContentPage/>} />
+              <Route path="/content/:type/:id" element={<SingleContentPage />} />
             </Route>
           </Routes>
         </BrowserRouter>

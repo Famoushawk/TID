@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { scaleOrdinal } from 'd3-scale-chromatic';
 
 const ExpensesDiagram = () => {
   const [expenseData, setExpenseData] = useState([
@@ -10,8 +11,25 @@ const ExpensesDiagram = () => {
   ]);
 
   const [formData, setFormData] = useState({ name: '', value: '' });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [outerRadius, setOuterRadius] = useState(Math.min(window.innerWidth * 0.3, 200));
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = scaleOrdinal(d3.schemeCategory10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const dynamicOuterRadius = Math.min(window.innerWidth * 0.3, 200);
+      setOuterRadius(dynamicOuterRadius);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +38,22 @@ const ExpensesDiagram = () => {
 
   const handleAddExpense = () => {
     if (formData.name && formData.value) {
-      setExpenseData([...expenseData, { name: formData.name, value: Number(formData.value) }]);
+      const value = Number(formData.value);
+      if (isNaN(value) || value <= 0) {
+        setErrorMessage('Please enter a valid number for the expense value greater than 0.');
+        setTimeout(() => {
+          setFormData({ name: '', value: '' });
+        }, 2000);
+        return;
+      }
+      setExpenseData((prevExpenseData) => [
+        ...prevExpenseData,
+        { name: formData.name, value },
+      ]);
       setFormData({ name: '', value: '' });
+      setErrorMessage('');
+    } else {
+      setErrorMessage('Both fields are required.');
     }
   };
 
@@ -56,6 +88,7 @@ const ExpensesDiagram = () => {
           onChange={handleInputChange}
         />
         <button onClick={handleAddExpense}>Add Expense</button>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       </div>
 
       <h2>Expense Distribution</h2>
@@ -68,7 +101,7 @@ const ExpensesDiagram = () => {
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={150}
+              outerRadius={outerRadius}
               fill="#8884d8"
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
               isAnimationActive
@@ -76,7 +109,7 @@ const ExpensesDiagram = () => {
               animationEasing="ease-in-out"
             >
               {expenseData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell key={`cell-${index}`} fill={COLORS(index % 10)} />
               ))}
             </Pie>
             <Tooltip content={<CustomTooltip />} />
