@@ -63,6 +63,12 @@ const Select = styled.select`
   }
 `;
 
+const StyledAddButton = styled(AddButtonContainer)`
+  font-size: calc(0.5rem + 0.5vw);
+  padding: calc(0.5rem + 0.5vw) calc(1rem + 0.5vw);
+  text-align: center;
+`;
+
 const ErrorMessage = styled.div`
   color: #d9534f;
   margin-bottom: 16px;
@@ -193,7 +199,7 @@ const Budget = () => {
             onChange={(e) => setManualBalance(e.target.value)}
             placeholder="Update balance"
           />
-          <AddButtonContainer onClick={() => updateBalance(Number(manualBalance))}>Update Balance</AddButtonContainer>
+          <StyledAddButton onClick={() => updateBalance(Number(manualBalance))}>Update Balance</StyledAddButton>
         </FormGroup>
       </Section>
 
@@ -215,7 +221,7 @@ const Budget = () => {
             onChange={(e) => setForm({ ...form, amount: e.target.value })}
             placeholder="Amount"
           />
-          <AddButtonContainer onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</AddButtonContainer>
+          <StyledAddButton onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</StyledAddButton>
         </FormGroup>
       </Section>
 
@@ -237,7 +243,7 @@ const Budget = () => {
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="New Category"
           />
-          <AddButtonContainer onClick={() => addCategory(newCategory)}>Add Category</AddButtonContainer>
+          <StyledAddButton onClick={() => addCategory(newCategory)}>Add Category</StyledAddButton>
         </FormGroup>
       </Section>
     </Wrapper>
