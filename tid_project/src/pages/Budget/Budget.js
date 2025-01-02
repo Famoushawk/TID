@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Parse from 'parse';
 import styled from 'styled-components';
+import { AddButtonContainer } from '../../components/Layout.styles';
 
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
@@ -59,19 +60,6 @@ const Select = styled.select`
   &:focus {
     border-color: #007bff;
     outline: none;
-  }
-`;
-
-const Button = styled.button`
-  padding: 10px 16px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
   }
 `;
 
@@ -205,7 +193,7 @@ const Budget = () => {
             onChange={(e) => setManualBalance(e.target.value)}
             placeholder="Update balance"
           />
-          <Button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</Button>
+          <AddButtonContainer onClick={() => updateBalance(Number(manualBalance))}>Update Balance</AddButtonContainer>
         </FormGroup>
       </Section>
 
@@ -227,7 +215,7 @@ const Budget = () => {
             onChange={(e) => setForm({ ...form, amount: e.target.value })}
             placeholder="Amount"
           />
-          <Button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</Button>
+          <AddButtonContainer onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</AddButtonContainer>
         </FormGroup>
       </Section>
 
@@ -249,7 +237,7 @@ const Budget = () => {
             onChange={(e) => setNewCategory(e.target.value)}
             placeholder="New Category"
           />
-          <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
+          <AddButtonContainer onClick={() => addCategory(newCategory)}>Add Category</AddButtonContainer>
         </FormGroup>
       </Section>
     </Wrapper>
