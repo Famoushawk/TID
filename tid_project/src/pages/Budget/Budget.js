@@ -80,6 +80,30 @@ const ErrorMessage = styled.div`
   font-size: 1rem;
 `;
 
+const CategoryList = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const CategoryItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+`;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  font-size: 1rem;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Budget = () => {
   const [balance, setBalance] = useState(0);
   const [expenses, setExpenses] = useState([]);
@@ -111,7 +135,10 @@ const Budget = () => {
     const query = new Parse.Query(Category);
     try {
       const results = await query.find();
-      return results.map((category) => category.get('name'));
+      return results.map((category) => ({
+        id: category.id,
+        name: category.get('name'),
+      }));
     } catch (error) {
       throw error;
     }
@@ -147,9 +174,21 @@ const Budget = () => {
     try {
       newCategory.set('name', categoryName);
       const savedCategory = await newCategory.save();
-      setExpenseCategories((prev) => [...prev, savedCategory.get('name')]); // Update state with new category
+      setExpenseCategories((prev) => [...prev, { id: savedCategory.id, name: savedCategory.get('name') }]);
     } catch (error) {
       throw error;
+    }
+  };
+
+  const deleteCategory = async (categoryId) => {
+    const Category = Parse.Object.extend('ExpenseCategory');
+    const query = new Parse.Query(Category);
+    try {
+      const category = await query.get(categoryId);
+      await category.destroy();
+      setExpenseCategories((prev) => prev.filter((cat) => cat.id !== categoryId));
+    } catch (error) {
+      setError('Failed to delete category. Please try again.');
     }
   };
 
@@ -210,8 +249,8 @@ const Budget = () => {
             onChange={(e) => setForm({ ...form, category: e.target.value })}
           >
             <option value="">Select Category</option>
-            {expenseCategories.map((category, index) => (
-              <option key={index} value={category}>{category}</option>
+            {expenseCategories.map((category) => (
+              <option key={category.id} value={category.name}>{category.name}</option>
             ))}
           </Select>
           <Input
@@ -235,6 +274,14 @@ const Budget = () => {
           />
           <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
         </FormGroup>
+        <CategoryList>
+          {expenseCategories.map((category) => (
+            <CategoryItem key={category.id}>
+              {category.name}
+              <DeleteButton onClick={() => deleteCategory(category.id)}>Delete</DeleteButton>
+            </CategoryItem>
+          ))}
+        </CategoryList>
       </Section>
 
       <Section>
