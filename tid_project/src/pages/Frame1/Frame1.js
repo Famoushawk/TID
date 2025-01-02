@@ -2,19 +2,19 @@ import { WhiteBackground } from '../../components/layout/Layout.styles';
 import React, { useState, useEffect } from 'react';
 import Parse from 'parse';
 
-// Initialize Parse
+
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
 const Frame1 = () => {
-  const [balance, setBalance] = useState(0); // Start balance fetched from Back4App
+  const [balance, setBalance] = useState(0); 
   const [expenses, setExpenses] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([]);
   const [form, setForm] = useState({ category: '', amount: '' });
   const [newCategory, setNewCategory] = useState('');
   const [manualBalance, setManualBalance] = useState('');
 
-  // Fetch initial data from Back4App
+
   useEffect(() => {
     const fetchInitialData = async () => {
       const categories = await fetchCategories();
@@ -28,14 +28,14 @@ const Frame1 = () => {
     fetchInitialData();
   }, []);
 
-  // Fetch balance from Back4App
+
   const fetchBalance = async () => {
     const query = new Parse.Query('Balance');
     const balanceObj = await query.first();
     return balanceObj ? balanceObj.get('amount') : 0;
   };
 
-  // Update balance in Back4App
+
   const updateBalance = async (newBalance) => {
     const query = new Parse.Query('Balance');
     const balanceObj = await query.first();
@@ -51,7 +51,7 @@ const Frame1 = () => {
     }
   };
 
-  // Fetch expenses from Back4App
+
   const fetchExpenses = async () => {
     const query = new Parse.Query('Expense');
     const results = await query.find();
@@ -61,7 +61,7 @@ const Frame1 = () => {
     }));
   };
 
-  // Add an expense to Back4App
+
   const addExpense = async (category, amount) => {
     const Expense = Parse.Object.extend('Expense');
     const expense = new Expense();
@@ -70,14 +70,14 @@ const Frame1 = () => {
     await expense.save();
   };
 
-  // Fetch categories from Back4App
+
   const fetchCategories = async () => {
     const query = new Parse.Query('ExpenseCategory');
     const results = await query.find();
     return results.map(category => category.get('name'));
   };
 
-  // Add a new category to Back4App
+
   const addCategory = async (newCategory) => {
     const query = new Parse.Query('ExpenseCategory');
     query.equalTo('name', newCategory);
@@ -93,7 +93,6 @@ const Frame1 = () => {
     }
   };
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -107,7 +106,7 @@ const Frame1 = () => {
     setManualBalance(e.target.value);
   };
 
-  // Handle adding expense
+
   const handleAddExpense = async (e) => {
     e.preventDefault();
     const { category, amount } = form;
@@ -126,7 +125,7 @@ const Frame1 = () => {
     setForm({ category: '', amount: '' });
   };
 
-  // Handle updating balance
+
   const handleUpdateBalance = async (e) => {
     e.preventDefault();
     const newBalance = parseFloat(manualBalance);
@@ -140,7 +139,7 @@ const Frame1 = () => {
     }
   };
 
-  // Handle adding category
+
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (newCategory && !expenseCategories.includes(newCategory)) {
@@ -155,9 +154,9 @@ const Frame1 = () => {
   return (
     <WhiteBackground>
       <div style={{ padding: '20px' }}>
-        <h1>Økonomisk Overblik</h1>
+        <h1>Financial overview</h1>
 
-        {/* Kontobalance */}
+        {}
         <div style={{
           marginBottom: '20px',
           padding: '10px',
@@ -166,15 +165,15 @@ const Frame1 = () => {
           display: 'flex',
           justifyContent: 'space-between'
         }}>
-          <span>Kontobalance:</span>
+          <span>Balance:</span>
           <span style={{ fontWeight: 'bold', color: '#28a745' }}>
             {balance.toFixed(2)} kr.
           </span>
         </div>
 
-        {/* Formular til manuel opdatering af kontobalance */}
+        {}
         <form onSubmit={handleUpdateBalance} style={{ marginBottom: '20px' }}>
-          <h3>Opdater kontobalance</h3>
+          <h3>Update account balance</h3>
           <input
             type="number"
             value={manualBalance}
@@ -191,11 +190,11 @@ const Frame1 = () => {
             cursor: 'pointer',
             width: '100%'
           }}>
-            Opdater Balance
+            Update balance
           </button>
         </form>
 
-        {/* Tilføj udgift */}
+        {}
         <form onSubmit={handleAddExpense} style={{ marginBottom: '20px' }}>
           <div>
             <select
@@ -204,7 +203,7 @@ const Frame1 = () => {
               onChange={handleInputChange}
               style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
             >
-              <option value="">Vælg kategori</option>
+              <option value="">Select category</option>
               {expenseCategories.map((category, index) => (
                 <option key={index} value={category}>{category}</option>
               ))}
@@ -229,18 +228,18 @@ const Frame1 = () => {
             cursor: 'pointer',
             width: '100%'
           }}>
-            Tilføj Udgift
+            Add expense
           </button>
         </form>
 
-        {/* Tilføj ny kategori */}
+        {}
         <form onSubmit={handleAddCategory} style={{ marginBottom: '20px' }}>
-          <h3>Tilføj ny udgiftstype</h3>
+          <h3>Add new expense type</h3>
           <input
             type="text"
             value={newCategory}
             onChange={handleCategoryChange}
-            placeholder="Ny kategori"
+            placeholder="New category"
             style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
           />
           <button type="submit" style={{
@@ -252,15 +251,15 @@ const Frame1 = () => {
             cursor: 'pointer',
             width: '100%'
           }}>
-            Tilføj Kategori
+            Add category
           </button>
         </form>
 
-        {/* Udgiftsoversigt */}
+        
         <div>
-          <h2>Udgifter</h2>
+          <h2>Expenses</h2>
           {expenses.length === 0 ? (
-            <p>Ingen udgifter endnu.</p>
+            <p>No expenses yet</p>
           ) : (
             <ul style={{ listStyleType: 'none', padding: '0' }}>
               {expenses.map((expense, index) => (
