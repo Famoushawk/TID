@@ -12,7 +12,7 @@ const Budget = () => {
   const [form, setForm] = useState({ category: '', amount: '' });
   const [newCategory, setNewCategory] = useState('');
   const [manualBalance, setManualBalance] = useState('');
-  const [error, setError] = useState(null); // State to handle errors or feedback
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -27,54 +27,89 @@ const Budget = () => {
         setError('Failed to fetch initial data. Please try again.');
       }
     };
+
     fetchInitialData();
   }, []);
 
-  const handleAddCategory = async () => {
-    if (!newCategory.trim()) {
-      setError('Category name cannot be empty.');
-      return;
-    }
-
+  const fetchCategories = async () => {
+    const Category = Parse.Object.extend('Categories');
+    const query = new Parse.Query(Category);
     try {
-      await addCategory(newCategory);
-      setExpenseCategories([...expenseCategories, newCategory]);
-      setNewCategory('');
-      setError(null); // Clear any previous error
-    } catch (err) {
-      setError('Failed to add category. Please try again.');
+      const results = await query.find();
+      return results.map((category) => category.get('name'));
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      throw error;
     }
   };
 
-  const handleUpdateBalance = async () => {
-    if (isNaN(manualBalance) || manualBalance.trim() === '') {
-      setError('Please enter a valid number for balance.');
-      return;
-    }
-
+  const fetchBalance = async () => {
+    const query = new Parse.Query('Balance');
     try {
-      await updateBalance(Number(manualBalance));
-      setBalance(Number(manualBalance));
-      setManualBalance('');
-      setError(null);
-    } catch (err) {
-      setError('Failed to update balance. Please try again.');
+      const balanceObj = await query.first();
+      return balanceObj ? balanceObj.get('amount') : 0;
+    } catch (error) {
+      console.error('Failed to fetch balance:', error);
+      throw error;
     }
   };
 
-  const handleAddExpense = async () => {
-    if (!form.category || !form.amount || isNaN(form.amount)) {
-      setError('Please fill in all fields with valid data.');
-      return;
-    }
-
+  const fetchExpenses = async () => {
+    const Expense = Parse.Object.extend('Expenses');
+    const query = new Parse.Query(Expense);
     try {
-      await addExpense(form.category, Number(form.amount));
-      setExpenses([...expenses, { category: form.category, amount: Number(form.amount) }]);
-      setForm({ category: '', amount: '' });
-      setError(null);
-    } catch (err) {
-      setError('Failed to add expense. Please try again.');
+      const results = await query.find();
+      return results.map((expense) => ({
+        category: expense.get('category'),
+        amount: expense.get('amount'),
+      }));
+    } catch (error) {
+      console.error('Failed to fetch expenses:', error);
+      throw error;
+    }
+  };
+
+  const addCategory = async (categoryName) => {
+    const Category = Parse.Object.extend('Categories');
+    const newCategory = new Category();
+    try {
+      newCategory.set('name', categoryName);
+      await newCategory.save();
+    } catch (error) {
+      console.error('Failed to add category:', error);
+      throw error;
+    }
+  };
+
+  const updateBalance = async (newBalance) => {
+    const query = new Parse.Query('Balance');
+    try {
+      const balanceObj = await query.first();
+      if (balanceObj) {
+        balanceObj.set('amount', newBalance);
+        await balanceObj.save();
+      } else {
+        const Balance = Parse.Object.extend('Balance');
+        const newBalanceObj = new Balance();
+        newBalanceObj.set('amount', newBalance);
+        await newBalanceObj.save();
+      }
+    } catch (error) {
+      console.error('Failed to update balance:', error);
+      throw error;
+    }
+  };
+
+  const addExpense = async (category, amount) => {
+    const Expense = Parse.Object.extend('Expenses');
+    const newExpense = new Expense();
+    try {
+      newExpense.set('category', category);
+      newExpense.set('amount', amount);
+      await newExpense.save();
+    } catch (error) {
+      console.error('Failed to add expense:', error);
+      throw error;
     }
   };
 
@@ -82,7 +117,7 @@ const Budget = () => {
     <WhiteBackground>
       <h1>Budget Management</h1>
 
-      {error && <div className="error-message">{error}</div>} {/* Display error messages */}
+      {error && <div className="error-message">{error}</div>}
 
       <div>
         <h2>Balance: {balance}</h2>
@@ -92,7 +127,7 @@ const Budget = () => {
           onChange={(e) => setManualBalance(e.target.value)}
           placeholder="Update balance"
         />
-        <button onClick={handleUpdateBalance}>Update Balance</button>
+        <button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</button>
       </div>
 
       <div>
@@ -109,7 +144,7 @@ const Budget = () => {
           onChange={(e) => setForm({ ...form, amount: e.target.value })}
           placeholder="Amount"
         />
-        <button onClick={handleAddExpense}>Add Expense</button>
+        <button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</button>
       </div>
 
       <div>
@@ -120,7 +155,7 @@ const Budget = () => {
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="New Category"
         />
-        <button onClick={handleAddCategory}>Add Category</button>
+        <button onClick={() => addCategory(newCategory)}>Add Category</button>
       </div>
 
       <div>
