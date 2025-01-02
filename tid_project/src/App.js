@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
 import DashboardLayout from './components/layout/DashboardLayout';
-import Frame1 from './pages/Frame1/Frame1';
+import Budget from './pages/Budget/Budget';
 import ContentPage from './pages/ContentPage/ContentPage';
 import Threads from './pages/Threads/Threads';
 import Login from './pages/Login/Login';
@@ -67,7 +67,7 @@ const PublicRoute = ({ children }) => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/frame1" replace />;
+    return <Navigate to="/Budget" replace />;
   }
 
   return children;
@@ -96,8 +96,8 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/frame1" replace />} />
-              <Route path="frame1" element={<Frame1 />} />
+              <Route index element={<Navigate to="/Budget" replace />} />
+              <Route path="Budget" element={<Budget />} />
               <Route path="profilelist" element={<ProfileList />} />
               <Route path="contentpage" element={<ContentPage />} />
               <Route path="Threads" element={<Threads />} />

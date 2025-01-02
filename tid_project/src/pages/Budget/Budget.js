@@ -6,7 +6,7 @@ import Parse from 'parse';
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const Frame1 = () => {
+const Budget = () => {
   const [balance, setBalance] = useState(0); 
   const [expenses, setExpenses] = useState([]);
   const [expenseCategories, setExpenseCategories] = useState([]);
@@ -283,4 +283,4 @@ const Frame1 = () => {
   );
 };
 
-export default Frame1;
+export default Budget;

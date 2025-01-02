@@ -34,7 +34,7 @@ const DashboardLayout = () => {
           <NavContent>
             <NavTitle>Dashboard</NavTitle>
             <NavLinks>
-              <Link to="/frame1" component={StyledNavLink}>Budget</Link>
+              <Link to="/Budget" component={StyledNavLink}>Budget</Link>
               <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
               <Link to="/contentpage" component={StyledNavLink}>Content</Link>
               <Link to="/Threads" component={StyledNavLink}>Threads</Link>

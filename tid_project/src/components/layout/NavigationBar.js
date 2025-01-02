@@ -10,7 +10,7 @@ const NavigationBar = ({ onAddButtonClick }) => {
 
   const renderButton = () => {
     switch (location.pathname) {
-      case '/frame1':
+      case '/Budget':
       case '/frame2':
       case '/Threads':
         return <SettingsButton />;
