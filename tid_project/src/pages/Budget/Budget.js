@@ -49,6 +49,18 @@ const Input = styled.input`
   }
 `;
 
+const Select = styled.select`
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+`;
+
 const Button = styled.button`
   padding: 10px 16px;
   font-size: 1rem;
@@ -192,12 +204,15 @@ const Budget = () => {
       <Section>
         <SectionTitle>Add Expense</SectionTitle>
         <FormGroup>
-          <Input
-            type="text"
+          <Select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
-            placeholder="Category"
-          />
+          >
+            <option value="">Select Category</option>
+            {expenseCategories.map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </Select>
           <Input
             type="text"
             value={form.amount}
