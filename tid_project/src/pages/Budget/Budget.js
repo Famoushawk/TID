@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Parse from 'parse';
 import styled from 'styled-components';
-import { AddButtonContainer } from '../../components/Layout.styles';
+import { AddButtonContainer } from '../../components/layout/Layout.styles';
 
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
