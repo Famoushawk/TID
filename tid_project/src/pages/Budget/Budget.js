@@ -164,7 +164,7 @@ const Budget = () => {
         newBalanceObj.set('amount', newBalance);
         await newBalanceObj.save();
       }
-      setBalance(newBalance); // Update state to reflect new balance
+      setBalance(newBalance);
     } catch (error) {
       throw error;
     }
