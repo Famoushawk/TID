@@ -1,67 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import Parse from 'parse';
+import styled from 'styled-components';
 
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
+const Wrapper = styled.div`
+  padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  max-width: 800px;
-  margin: 0 auto;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 2rem;
   color: #333;
-  text-align: center;
   margin-bottom: 16px;
 `;
 
-const Section = styled.div`
+const Section = styled.section`
   margin-bottom: 24px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const Label = styled.label`
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 8px;
-  display: block;
+const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  color: #444;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-bottom: 12px;
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
+  padding: 10px 16px;
+  font-size: 1rem;
+  color: #fff;
   background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
   cursor: pointer;
-
   &:hover {
     background-color: #0056b3;
   }
 `;
 
 const ErrorMessage = styled.div`
-  color: red;
-  font-size: 14px;
+  color: #d9534f;
   margin-bottom: 16px;
+  font-size: 1rem;
 `;
 
 const Budget = () => {
@@ -167,59 +171,65 @@ const Budget = () => {
   };
 
   return (
-    <Container>
+    <Wrapper>
       <Title>Budget Management</Title>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <Section>
-        <Label>Current Balance: {balance}</Label>
-        <Input
-          type="text"
-          value={manualBalance}
-          onChange={(e) => setManualBalance(e.target.value)}
-          placeholder="Update balance"
-        />
-        <Button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</Button>
+        <SectionTitle>Balance</SectionTitle>
+        <FormGroup>
+          <Input
+            type="text"
+            value={manualBalance}
+            onChange={(e) => setManualBalance(e.target.value)}
+            placeholder="Update balance"
+          />
+          <Button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</Button>
+        </FormGroup>
       </Section>
 
       <Section>
-        <Label>Add Expense</Label>
-        <Input
-          type="text"
-          value={form.category}
-          onChange={(e) => setForm({ ...form, category: e.target.value })}
-          placeholder="Category"
-        />
-        <Input
-          type="text"
-          value={form.amount}
-          onChange={(e) => setForm({ ...form, amount: e.target.value })}
-          placeholder="Amount"
-        />
-        <Button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</Button>
+        <SectionTitle>Add Expense</SectionTitle>
+        <FormGroup>
+          <Input
+            type="text"
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            placeholder="Category"
+          />
+          <Input
+            type="text"
+            value={form.amount}
+            onChange={(e) => setForm({ ...form, amount: e.target.value })}
+            placeholder="Amount"
+          />
+          <Button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</Button>
+        </FormGroup>
       </Section>
 
       <Section>
-        <Label>Add Category</Label>
-        <Input
-          type="text"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-          placeholder="New Category"
-        />
-        <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
+        <SectionTitle>Add Category</SectionTitle>
+        <FormGroup>
+          <Input
+            type="text"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            placeholder="New Category"
+          />
+          <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
+        </FormGroup>
       </Section>
 
       <Section>
-        <Label>Expenses</Label>
+        <SectionTitle>Expenses</SectionTitle>
         <ul>
           {expenses.map((expense, index) => (
             <li key={index}>{expense.category}: {expense.amount}</li>
           ))}
         </ul>
       </Section>
-    </Container>
+    </Wrapper>
   );
 };
 
