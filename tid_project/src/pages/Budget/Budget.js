@@ -1,9 +1,68 @@
-import { WhiteBackground } from '../../components/layout/Layout.styles';
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import Parse from 'parse';
 
 Parse.initialize('BLJvJPeABAqvYm1193o5WAfaCEpfzvjAuDTLqe2P', 'Tf7tdCcH6j3YCJkzRJp05VcLIddIzGtbAs6rGruN');
 Parse.serverURL = 'https://parseapi.back4app.com/';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 16px;
+`;
+
+const Section = styled.div`
+  margin-bottom: 24px;
+`;
+
+const Label = styled.label`
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 12px;
+`;
+
+const Button = styled.button`
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 14px;
+  margin-bottom: 16px;
+`;
 
 const Budget = () => {
   const [balance, setBalance] = useState(0);
@@ -17,16 +76,13 @@ const Budget = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        console.log('Fetching initial data...');
         const categories = await fetchCategories();
         const currentBalance = await fetchBalance();
         const currentExpenses = await fetchExpenses();
         setExpenseCategories(categories);
         setBalance(currentBalance);
         setExpenses(currentExpenses);
-        console.log('Initial data fetched successfully.');
       } catch (err) {
-        console.error('Error fetching initial data:', err);
         setError('Failed to fetch initial data. Please try again.');
       }
     };
@@ -39,10 +95,8 @@ const Budget = () => {
     const query = new Parse.Query(Category);
     try {
       const results = await query.find();
-      console.log('Fetched categories:', results);
       return results.map((category) => category.get('name'));
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
       throw error;
     }
   };
@@ -51,10 +105,8 @@ const Budget = () => {
     const query = new Parse.Query('Balance');
     try {
       const balanceObj = await query.first();
-      console.log('Fetched balance:', balanceObj);
       return balanceObj ? balanceObj.get('amount') : 0;
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
       throw error;
     }
   };
@@ -64,13 +116,11 @@ const Budget = () => {
     const query = new Parse.Query(Expense);
     try {
       const results = await query.find();
-      console.log('Fetched expenses:', results);
       return results.map((expense) => ({
         category: expense.get('category'),
         amount: expense.get('amount'),
       }));
     } catch (error) {
-      console.error('Failed to fetch expenses:', error);
       throw error;
     }
   };
@@ -80,10 +130,8 @@ const Budget = () => {
     const newCategory = new Category();
     try {
       newCategory.set('name', categoryName);
-      const savedCategory = await newCategory.save();
-      console.log('Category added:', savedCategory);
+      await newCategory.save();
     } catch (error) {
-      console.error('Failed to add category:', error);
       throw error;
     }
   };
@@ -94,17 +142,14 @@ const Budget = () => {
       const balanceObj = await query.first();
       if (balanceObj) {
         balanceObj.set('amount', newBalance);
-        const updatedBalance = await balanceObj.save();
-        console.log('Balance updated:', updatedBalance);
+        await balanceObj.save();
       } else {
         const Balance = Parse.Object.extend('Balance');
         const newBalanceObj = new Balance();
         newBalanceObj.set('amount', newBalance);
-        const createdBalance = await newBalanceObj.save();
-        console.log('New balance created:', createdBalance);
+        await newBalanceObj.save();
       }
     } catch (error) {
-      console.error('Failed to update balance:', error);
       throw error;
     }
   };
@@ -115,68 +160,66 @@ const Budget = () => {
     try {
       newExpense.set('category', category);
       newExpense.set('amount', amount);
-      const savedExpense = await newExpense.save();
-      console.log('Expense added:', savedExpense);
+      await newExpense.save();
     } catch (error) {
-      console.error('Failed to add expense:', error);
       throw error;
     }
   };
 
   return (
-    <WhiteBackground>
-      <h1>Budget Management</h1>
+    <Container>
+      <Title>Budget Management</Title>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <div>
-        <h2>Balance: {balance}</h2>
-        <input
+      <Section>
+        <Label>Current Balance: {balance}</Label>
+        <Input
           type="text"
           value={manualBalance}
           onChange={(e) => setManualBalance(e.target.value)}
           placeholder="Update balance"
         />
-        <button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</button>
-      </div>
+        <Button onClick={() => updateBalance(Number(manualBalance))}>Update Balance</Button>
+      </Section>
 
-      <div>
-        <h2>Add Expense</h2>
-        <input
+      <Section>
+        <Label>Add Expense</Label>
+        <Input
           type="text"
           value={form.category}
           onChange={(e) => setForm({ ...form, category: e.target.value })}
           placeholder="Category"
         />
-        <input
+        <Input
           type="text"
           value={form.amount}
           onChange={(e) => setForm({ ...form, amount: e.target.value })}
           placeholder="Amount"
         />
-        <button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</button>
-      </div>
+        <Button onClick={() => addExpense(form.category, Number(form.amount))}>Add Expense</Button>
+      </Section>
 
-      <div>
-        <h2>Add Category</h2>
-        <input
+      <Section>
+        <Label>Add Category</Label>
+        <Input
           type="text"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="New Category"
         />
-        <button onClick={() => addCategory(newCategory)}>Add Category</button>
-      </div>
+        <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
+      </Section>
 
-      <div>
-        <h2>Expenses</h2>
+      <Section>
+        <Label>Expenses</Label>
         <ul>
           {expenses.map((expense, index) => (
             <li key={index}>{expense.category}: {expense.amount}</li>
           ))}
         </ul>
-      </div>
-    </WhiteBackground>
+      </Section>
+    </Container>
   );
 };
 
