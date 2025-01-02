@@ -178,7 +178,7 @@ const Frame1 = () => {
             type="number"
             value={manualBalance}
             onChange={handleBalanceChange}
-            placeholder="Ny kontobalance"
+            placeholder="New balance"
             style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
           />
           <button type="submit" style={{
@@ -214,7 +214,7 @@ const Frame1 = () => {
               type="number"
               name="amount"
               value={form.amount}
-              placeholder="Beløb (kr.)"
+              placeholder="Amount (kr.)"
               onChange={handleInputChange}
               style={{ padding: '10px', width: '100%', marginBottom: '10px' }}
             />
