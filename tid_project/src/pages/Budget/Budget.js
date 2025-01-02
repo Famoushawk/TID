@@ -170,6 +170,7 @@ const Budget = () => {
         newBalanceObj.set('amount', newBalance);
         await newBalanceObj.save();
       }
+      setBalance(newBalance); // Update state to reflect new balance
     } catch (error) {
       throw error;
     }
@@ -181,7 +182,8 @@ const Budget = () => {
     try {
       newExpense.set('category', category);
       newExpense.set('amount', amount);
-      await newExpense.save();
+      const savedExpense = await newExpense.save();
+      setExpenses((prev) => [...prev, { category: savedExpense.get('category'), amount: savedExpense.get('amount') }]); // Add new expense to the list
     } catch (error) {
       throw error;
     }
@@ -195,6 +197,7 @@ const Budget = () => {
 
       <Section>
         <SectionTitle>Balance</SectionTitle>
+        <p>Current Balance: {balance}</p>
         <FormGroup>
           <Input
             type="text"
@@ -229,6 +232,15 @@ const Budget = () => {
       </Section>
 
       <Section>
+        <SectionTitle>Expenses</SectionTitle>
+        <ul>
+          {expenses.map((expense, index) => (
+            <li key={index}>{expense.category}: {expense.amount}</li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section>
         <SectionTitle>Add Category</SectionTitle>
         <FormGroup>
           <Input
@@ -239,15 +251,6 @@ const Budget = () => {
           />
           <Button onClick={() => addCategory(newCategory)}>Add Category</Button>
         </FormGroup>
-      </Section>
-
-      <Section>
-        <SectionTitle>Expenses</SectionTitle>
-        <ul>
-          {expenses.map((expense, index) => (
-            <li key={index}>{expense.category}: {expense.amount}</li>
-          ))}
-        </ul>
       </Section>
     </Wrapper>
   );
