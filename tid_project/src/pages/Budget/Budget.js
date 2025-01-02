@@ -146,7 +146,8 @@ const Budget = () => {
     const newCategory = new Category();
     try {
       newCategory.set('name', categoryName);
-      await newCategory.save();
+      const savedCategory = await newCategory.save();
+      setExpenseCategories((prev) => [...prev, savedCategory.get('name')]); // Update state with new category
     } catch (error) {
       throw error;
     }
