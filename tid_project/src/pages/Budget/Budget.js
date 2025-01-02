@@ -35,7 +35,7 @@ const Budget = () => {
   }, []);
 
   const fetchCategories = async () => {
-    const Category = Parse.Object.extend('Categories');
+    const Category = Parse.Object.extend('ExpenseCategory');
     const query = new Parse.Query(Category);
     try {
       const results = await query.find();
@@ -60,7 +60,7 @@ const Budget = () => {
   };
 
   const fetchExpenses = async () => {
-    const Expense = Parse.Object.extend('Expenses');
+    const Expense = Parse.Object.extend('Expense');
     const query = new Parse.Query(Expense);
     try {
       const results = await query.find();
@@ -76,7 +76,7 @@ const Budget = () => {
   };
 
   const addCategory = async (categoryName) => {
-    const Category = Parse.Object.extend('Categories');
+    const Category = Parse.Object.extend('ExpenseCategory');
     const newCategory = new Category();
     try {
       newCategory.set('name', categoryName);
@@ -110,7 +110,7 @@ const Budget = () => {
   };
 
   const addExpense = async (category, amount) => {
-    const Expense = Parse.Object.extend('Expenses');
+    const Expense = Parse.Object.extend('Expense');
     const newExpense = new Expense();
     try {
       newExpense.set('category', category);
