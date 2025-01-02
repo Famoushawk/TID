@@ -17,13 +17,16 @@ const Budget = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
+        console.log('Fetching initial data...');
         const categories = await fetchCategories();
         const currentBalance = await fetchBalance();
         const currentExpenses = await fetchExpenses();
         setExpenseCategories(categories);
         setBalance(currentBalance);
         setExpenses(currentExpenses);
+        console.log('Initial data fetched successfully.');
       } catch (err) {
+        console.error('Error fetching initial data:', err);
         setError('Failed to fetch initial data. Please try again.');
       }
     };
@@ -36,6 +39,7 @@ const Budget = () => {
     const query = new Parse.Query(Category);
     try {
       const results = await query.find();
+      console.log('Fetched categories:', results);
       return results.map((category) => category.get('name'));
     } catch (error) {
       console.error('Failed to fetch categories:', error);
@@ -47,6 +51,7 @@ const Budget = () => {
     const query = new Parse.Query('Balance');
     try {
       const balanceObj = await query.first();
+      console.log('Fetched balance:', balanceObj);
       return balanceObj ? balanceObj.get('amount') : 0;
     } catch (error) {
       console.error('Failed to fetch balance:', error);
@@ -59,6 +64,7 @@ const Budget = () => {
     const query = new Parse.Query(Expense);
     try {
       const results = await query.find();
+      console.log('Fetched expenses:', results);
       return results.map((expense) => ({
         category: expense.get('category'),
         amount: expense.get('amount'),
@@ -74,7 +80,8 @@ const Budget = () => {
     const newCategory = new Category();
     try {
       newCategory.set('name', categoryName);
-      await newCategory.save();
+      const savedCategory = await newCategory.save();
+      console.log('Category added:', savedCategory);
     } catch (error) {
       console.error('Failed to add category:', error);
       throw error;
@@ -87,12 +94,14 @@ const Budget = () => {
       const balanceObj = await query.first();
       if (balanceObj) {
         balanceObj.set('amount', newBalance);
-        await balanceObj.save();
+        const updatedBalance = await balanceObj.save();
+        console.log('Balance updated:', updatedBalance);
       } else {
         const Balance = Parse.Object.extend('Balance');
         const newBalanceObj = new Balance();
         newBalanceObj.set('amount', newBalance);
-        await newBalanceObj.save();
+        const createdBalance = await newBalanceObj.save();
+        console.log('New balance created:', createdBalance);
       }
     } catch (error) {
       console.error('Failed to update balance:', error);
@@ -106,7 +115,8 @@ const Budget = () => {
     try {
       newExpense.set('category', category);
       newExpense.set('amount', amount);
-      await newExpense.save();
+      const savedExpense = await newExpense.save();
+      console.log('Expense added:', savedExpense);
     } catch (error) {
       console.error('Failed to add expense:', error);
       throw error;
