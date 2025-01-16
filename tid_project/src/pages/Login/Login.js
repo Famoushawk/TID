@@ -16,9 +16,9 @@ import {
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
-  const [credentials, setCredentials] = useState({ 
-    username: '', 
-    email: '', 
+  const [credentials, setCredentials] = useState({
+    username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
@@ -37,7 +37,7 @@ const Login = () => {
         if (credentials.password !== credentials.confirmPassword) {
           throw new Error('Passwords do not match');
         }
-        
+
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(credentials.email)) {
@@ -52,7 +52,7 @@ const Login = () => {
       } else {
         await AuthService.login(credentials.username, credentials.password);
       }
-      navigate('/frame1');
+      navigate('/Budget');
     } catch (error) {
       setError(error.message || `${isSignup ? 'Signup' : 'Login'} failed`);
     } finally {
@@ -124,7 +124,7 @@ const Login = () => {
           )}
 
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          
+
           <Button type="submit" disabled={loading}>
             {loading ? (isSignup ? 'Signing up...' : 'Logging in...') : (isSignup ? 'Sign Up' : 'Login')}
           </Button>
