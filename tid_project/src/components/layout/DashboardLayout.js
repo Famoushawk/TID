@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
+import BurgerMenu from './BurgerMenu';
 import { AuthService } from '../../api/services/AuthService';
 import {
   DashboardContainer,
@@ -14,6 +15,7 @@ import {
 } from './Layout.styles';
 
 const DashboardLayout = () => {
+  const [isNavBarVisible, setIsNavBarVisible] = useState(true);
   const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -28,22 +30,25 @@ const DashboardLayout = () => {
 
   return (
     <div>
-      <NavigationBar onAddButtonClick={() => setIsNewThreadDialogOpen(true)} />
+      <NavigationBar onAddButtonClick={() => setIsNewThreadDialogOpen(true)}
+        onBurgerMenuClick={() => setIsNavBarVisible(!isNavBarVisible)} />
       <DashboardContainer>
-        <NavBar>
-          <NavContent>
-            <NavTitle>Dashboard</NavTitle>
-            <NavLinks>
-              <Link to="/Budget" component={StyledNavLink}>Budget</Link>
-              <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
-              <Link to="/contentpage" component={StyledNavLink}>Content</Link>
-              <Link to="/Threads" component={StyledNavLink}>Threads</Link>
-              <StyledNavLink as="button" onClick={handleLogout}>
-                Logout
-              </StyledNavLink>
-            </NavLinks>
-          </NavContent>
-        </NavBar>
+        {isNavBarVisible && (
+          <NavBar>
+            <NavContent>
+              <NavTitle>Dashboard</NavTitle>
+              <NavLinks>
+                <Link to="/Budget" component={StyledNavLink}>Budget</Link>
+                <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
+                <Link to="/contentpage" component={StyledNavLink}>Content</Link>
+                <Link to="/Threads" component={StyledNavLink}>Threads</Link>
+                <StyledNavLink as="button" onClick={handleLogout}>
+                  Logout
+                </StyledNavLink>
+              </NavLinks>
+            </NavContent>
+          </NavBar>
+        )}
         <ProfileBar />
         <MainContent>
           <Outlet />
