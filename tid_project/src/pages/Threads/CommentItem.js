@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatTimeAgo } from '../../components/utils/dateUtils';
 
 const CommentItemWrapper = styled.li`
   border-radius: 16px 16px 0px 0px;

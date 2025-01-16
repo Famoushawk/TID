@@ -4,7 +4,6 @@ export const theme = {
         secondary: '#C8E2D0',
         white: '#FFFFFF',
         black: '#000000',
-        // Changed from nested object to flat structure for easier access
         gray50: '#F9FAFB',
         gray100: '#F3F4F6',
         gray200: '#E5E7EB',
@@ -15,10 +14,8 @@ export const theme = {
         gray700: '#374151',
         gray800: '#1F2937',
         gray900: '#111827',
-        // Similarly for zinc colors
         zinc700: '#3F3F46',
         zinc900: '#18181B',
-        // And for other colors
         red100: '#FEE2E2',
         red400: '#F87171',
         red700: '#B91C1C',
