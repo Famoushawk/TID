@@ -5,7 +5,7 @@ import SettingsButton from './SettingsButton';
 import { NavBarContainer } from './Layout.styles';
 import AddButtonContentPage from './AddButtonContentPage';
 
-const NavigationBar = ({ onAddButtonClick }) => {
+const NavigationBar = ({ onAddButtonClick, onBurgerMenuClick }) => {
   const location = useLocation();
 
   const renderButton = () => {
@@ -23,7 +23,7 @@ const NavigationBar = ({ onAddButtonClick }) => {
 
   return (
     <NavBarContainer>
-      <BurgerMenu />
+      <BurgerMenu onClick={onBurgerMenuClick} />
       {renderButton()}
     </NavBarContainer>
   );
