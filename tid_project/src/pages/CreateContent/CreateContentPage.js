@@ -93,7 +93,7 @@ const CreateContentPage = () => {
             <Button type="submit" disabled={loading}>
               {loading ? "Submitting..." : "Submit"}
             </Button>
-            <Button type="button" onClick={() => navigate("/frame3")}>
+            <Button type="button" onClick={() => navigate("/contentpage")}>
               Cancel
             </Button>
           </ButtonGroup>
