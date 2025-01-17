@@ -13,6 +13,7 @@ import apiClient from './api/client';
 import CreateContentPage from './pages/CreateContent/CreateContentPage';
 import SingleContentPage from './pages/ContentPage/SingleContentPage';
 import ProfileList from './pages/ProfileList/ProfileList';
+import DownloadBudgetTemplate from './pages/ProfileList/DownloadBudgetTemplate';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
@@ -104,6 +105,7 @@ function App() {
               <Route path="settings" element={<Settings />} />
               <Route path="/create-content" element={<CreateContentPage />} />
               <Route path="/content/:type/:id" element={<SingleContentPage />} />
+              <Route path="/downloadbudgetexpense" element={<DownloadBudgetTemplate />} />
             </Route>
           </Routes>
         </BrowserRouter>

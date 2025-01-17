@@ -1,31 +1,47 @@
 import React from "react";
 import ProfileOptions from "./ProfileOptions";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 const profileData = [
   {
-    title: "Current status",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "/api/placeholder/80/80",
+    title: "Download budget template",
+    description: "Click to download a budget template.",
+    imageUrl: './wallet.png',
+    type: "download",
+    fileUrl: '/path/to/budget-template.xlsx'
   },
   {
-    title: "Expense Tracker",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "/api/placeholder/80/80",
+    title: "Set goal for saving up",
+    description: "Click to set up a saving goal.",
+    imageUrl: './target.png',
+    type: "goal"
   },
   {
-    title: "Financial Goals",
-    description: "Supporting line text lorem ipsum dolor sit amet, consectetur.",
-    imageUrl: "/api/placeholder/80/80",
-  },
+    title: "Diagram of expenses",
+    description: "A visual representation of your expenses",
+    imageUrl: './calculator.png',
+    type: "diagram"
+  }
 ];
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (item) => {
+    if (item.type === "download") {
+      navigate('/downloadbudgetexpense')
+    }
+  }
   return (
     <ListContainer>
       {profileData.map((item, index) => (
-        <ProfileOptions key={index} {...item} />
+        <li key={index} onClick={() => handleClick(item)}>
+          <ProfileOptions {...item} />
+        </li>
       ))}
     </ListContainer>
+
   );
 };
 
