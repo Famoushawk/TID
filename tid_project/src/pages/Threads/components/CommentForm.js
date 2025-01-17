@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useThread } from './ThreadContext';
+import { useThread } from '../ThreadContext';
 
 const MessageInputWrapper = styled.div`
   display: flex;

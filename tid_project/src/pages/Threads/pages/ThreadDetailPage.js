@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useThread } from './ThreadContext';
-import Header from './Header';
-import CommentSection from './CommentSection';
-import MessageInput from './MessageInput';
-import ThreadCard from './ThreadCard';
-import NewThreadDialog from './NewThreadDialog';
-import AddButton from '../../components/layout/AddButton';
-import { ThreadService } from '../../api/services/ThreadService';
+import { useThread } from '../ThreadContext';
+import Header from '../Header';
+import CommentSection from '../components/CommentList';
+import MessageInput from '../components/CommentForm';
+import ThreadCard from '../ThreadCard';
+import NewThreadDialog from '../NewThreadDialog';
+import AddButton from '../../../components/layout/AddButton';
+import { ThreadService } from '../../../api/services/ThreadService';
 
 const ContentContainer = styled.div`
   border-radius: 28px;

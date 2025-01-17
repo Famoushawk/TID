@@ -1,7 +1,7 @@
 import React from 'react';
-import { WhiteBackground } from '../../components/layout/Layout.styles';
-import Content from './Content';
-import { ThreadProvider } from './ThreadContext';
+import { WhiteBackground } from '../../../components/layout/Layout.styles';
+import Content from './ThreadDetailPage';
+import { ThreadProvider } from '../ThreadContext';
 
 const Threads = () => {
   return (
