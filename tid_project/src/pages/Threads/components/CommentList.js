@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import CommentItem from '../CommentItem';
+import CommentItem from './CommentItem';
 import { useThread } from '../ThreadContext';
 import { CommentService } from '../../../api/services/CommentService';
 import { formatTimeAgo } from '../../../components/utils/dateUtils';
