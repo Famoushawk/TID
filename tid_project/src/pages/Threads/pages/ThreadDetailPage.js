@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useThread } from '../ThreadContext';
-import Header from '../Header';
+import Header from '../ThreadForm/Header';
 import CommentSection from '../components/CommentList';
 import MessageInput from '../components/CommentForm';
-import ThreadCard from '../ThreadCard';
-import NewThreadDialog from '../NewThreadDialog';
+import ThreadCard from '../ThreadForm/ThreadCard'
+import NewThreadDialog from '../../Threads/ThreadForm/NewThreadDialog';
 import AddButton from '../../../components/layout/AddButton';
 import { ThreadService } from '../../../api/services/ThreadService';
 
@@ -70,7 +70,7 @@ const Content = () => {
           <BackButton onClick={() => setSelectedThread(null)}>
             Back to Threads
           </BackButton>
-          <Header 
+          <Header
             title={selectedThread.title}
             content={selectedThread.content}
           />
@@ -82,7 +82,7 @@ const Content = () => {
           <Header title="Discussion Forum" />
           <ThreadList>
             {threads.map((thread) => (
-              <ThreadCard 
+              <ThreadCard
                 key={thread.objectId}
                 thread={thread}
                 onClick={() => handleThreadClick(thread)}
@@ -90,7 +90,7 @@ const Content = () => {
             ))}
           </ThreadList>
           <AddButton onClick={handleAddClick} />
-          <NewThreadDialog 
+          <NewThreadDialog
             isOpen={isNewThreadDialogOpen}
             onClose={() => setIsNewThreadDialogOpen(false)}
           />

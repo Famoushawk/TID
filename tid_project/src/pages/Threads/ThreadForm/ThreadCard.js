@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatDateTime } from '../../components/utils/dateUtils';
+import { formatDateTime } from '../../../components/utils/dateUtils';
 
 const Card = styled.div`
   padding: ${({ theme }) => theme.spacing[4]};
@@ -49,23 +49,23 @@ const CommentCount = styled.span`
 `;
 
 const ThreadCard = ({ thread, onClick }) => {
-    const authorName = thread.author?.username || thread.authorName || 'Anonymous';
+  const authorName = thread.author?.username || thread.authorName || 'Anonymous';
   return (
     <Card onClick={onClick}>
       <Title>{thread.title}</Title>
       <Content>{thread.content}</Content>
       <MetadataContainer>
-      <AuthorInfo>
-      Posted by {authorName} • {formatDateTime(thread.createdAt)}
-    </AuthorInfo>
+        <AuthorInfo>
+          Posted by {authorName} • {formatDateTime(thread.createdAt)}
+        </AuthorInfo>
         <CommentCount>
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
             strokeLinejoin="round"
           >
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />

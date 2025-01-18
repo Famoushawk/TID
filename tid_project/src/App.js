@@ -6,7 +6,7 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Budget from './pages/Budget/Budget';
 import ContentPage from './pages/ContentPage/ContentPage';
-import Threads from './pages/Threads/Threads';
+import ThreadsPage from './pages/Threads/pages/ThreadsPage';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
 import apiClient from './api/client';
@@ -101,7 +101,7 @@ function App() {
               <Route path="Budget" element={<Budget />} />
               <Route path="profilelist" element={<ProfileList />} />
               <Route path="contentpage" element={<ContentPage />} />
-              <Route path="Threads" element={<Threads />} />
+              <Route path="Threads" element={<ThreadsPage />} />
               <Route path="settings" element={<Settings />} />
               <Route path="/create-content" element={<CreateContentPage />} />
               <Route path="/content/:type/:id" element={<SingleContentPage />} />
