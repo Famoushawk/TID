@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Parse from 'parse';
+import { AuthService } from '../../api/services/AuthService';
 import {
   SettingsContainer,
   PageTitle,
@@ -10,30 +10,44 @@ import {
   Label,
   Input,
   HelpText,
-  Button
+  Button,
+  AvatarGrid,
+  AvatarOption,
+  CurrentAvatar
 } from './Settings.styles';
 
+const AVATAR_OPTIONS = [
+  {
+    id: 'avatar1',
+    url: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png'
+  },
+  {
+    id: 'avatar2',
+    url: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/45.png'
+  },
+  {
+    id: 'avatar3',
+    url: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/85.png'
+  }
+];
+
 const Settings = () => {
-  const [user, setUser] = useState({
-    username: '',
-    email: ''
-  });
-  const [newPassword, setNewPassword] = useState({
-    current: '',
-    new: '',
-    confirm: ''
-  });
+  const [user, setUser] = useState({ username: '', email: '' });
+  const [newPassword, setNewPassword] = useState({ current: '', new: '', confirm: '' });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
+      try {
+        const currentUser = await AuthService.getCurrentUser();
         setUser({
-          username: currentUser.get('username'),
-          email: currentUser.get('email') || '',
+          username: currentUser.data.username,
+          email: currentUser.data.email || '',
+          avatar: currentUser.data.avatar || AVATAR_OPTIONS[0].url
         });
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
     };
 
@@ -46,17 +60,20 @@ const Settings = () => {
     setMessage({ text: '', type: '' });
 
     try {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
-        currentUser.set('email', user.email);
-        await currentUser.save();
-        setMessage({ text: 'Profile updated successfully!', type: 'success' });
-      }
+      await AuthService.updateProfile({ 
+        email: user.email,
+        avatar: user.avatar
+      });
+      setMessage({ text: 'Profile updated successfully!', type: 'success' });
     } catch (error) {
       setMessage({ text: error.message || 'Error updating profile', type: 'error' });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleAvatarSelect = (avatarUrl) => {
+    setUser({ ...user, avatar: avatarUrl });
   };
 
   const handleChangePassword = async (e) => {
@@ -71,14 +88,9 @@ const Settings = () => {
     }
 
     try {
-      const currentUser = Parse.User.current();
-      if (currentUser) {
-        await Parse.User.logIn(user.username, newPassword.current);
-        currentUser.setPassword(newPassword.new);
-        await currentUser.save();
-        setMessage({ text: 'Password changed successfully!', type: 'success' });
-        setNewPassword({ current: '', new: '', confirm: '' });
-      }
+      await AuthService.changePassword(newPassword.current, newPassword.new);
+      setMessage({ text: 'Password changed successfully!', type: 'success' });
+      setNewPassword({ current: '', new: '', confirm: '' });
     } catch (error) {
       setMessage({ text: error.message || 'Error changing password', type: 'error' });
     } finally {
@@ -99,6 +111,27 @@ const Settings = () => {
       <Card>
         <SectionTitle>Profile Information</SectionTitle>
         <form onSubmit={handleUpdateProfile}>
+          {user.avatar && (
+            <CurrentAvatar>
+              <img src={user.avatar} alt="Current avatar" />
+            </CurrentAvatar>
+          )}
+
+          <FormGroup>
+            <Label>Select Avatar</Label>
+            <AvatarGrid>
+              {AVATAR_OPTIONS.map((avatar) => (
+                <AvatarOption
+                  key={avatar.id}
+                  isSelected={user.avatar === avatar.url}
+                  onClick={() => handleAvatarSelect(avatar.url)}
+                >
+                  <img src={avatar.url} alt={`Avatar option ${avatar.id}`} />
+                </AvatarOption>
+              ))}
+            </AvatarGrid>
+          </FormGroup>
+
           <FormGroup>
             <Label htmlFor="username">Username</Label>
             <Input

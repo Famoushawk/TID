@@ -3,21 +3,23 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
 import { GlobalStyles } from './styles/GlobalStyles';
-import Parse from 'parse';
 import DashboardLayout from './components/layout/DashboardLayout';
-import Frame1 from './pages/Frame1/Frame1';
-import Frame2 from './pages/Frame2/Frame2';
-import Frame3 from './pages/Frame3/Frame3';
-import Frame4 from './pages/Frame4';
+import Budget from './pages/Budget/Budget';
+import ContentPage from './pages/ContentPage/ContentPage';
+import ThreadsPage from './pages/Threads/pages/ThreadsPage';
 import Login from './pages/Login/Login';
 import Settings from './pages/Settings/Settings';
-
+import apiClient from './api/client';
+import CreateContentPage from './pages/CreateContent/CreateContentPage';
+import SingleContentPage from './pages/ContentPage/SingleContentPage';
+import ProfileList from './pages/ProfileList/ProfileList';
+import DownloadBudgetTemplate from './pages/ProfileList/DownloadBudgetTemplate';
 
 const checkUser = async () => {
   const sessionToken = localStorage.getItem('sessionToken');
   if (sessionToken) {
     try {
-      await Parse.User.become(sessionToken);
+      const response = await apiClient.get('/users/me');
       return true;
     } catch (error) {
       localStorage.removeItem('sessionToken');
@@ -40,7 +42,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (!isAuthenticated) {
@@ -62,11 +64,11 @@ const PublicRoute = ({ children }) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/frame1" replace />;
+    return <Navigate to="/Budget" replace />;
   }
 
   return children;
@@ -79,28 +81,31 @@ function App() {
       <div>
         <BrowserRouter>
           <Routes>
-            <Route 
-              path="/login" 
+            <Route
+              path="/login"
               element={
                 <PublicRoute>
                   <Login />
                 </PublicRoute>
-              } 
+              }
             />
-            <Route 
-              path="/" 
+            <Route
+              path="/"
               element={
                 <ProtectedRoute>
                   <DashboardLayout />
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/frame1" replace />} />
-              <Route path="frame1" element={<Frame1 />} />
-              <Route path="frame2" element={<Frame2 />} />
-              <Route path="frame3" element={<Frame3 />} />
-              <Route path="frame4" element={<Frame4 />} />
+              <Route index element={<Navigate to="/Budget" replace />} />
+              <Route path="Budget" element={<Budget />} />
+              <Route path="profilelist" element={<ProfileList />} />
+              <Route path="contentpage" element={<ContentPage />} />
+              <Route path="Threads" element={<ThreadsPage />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="/create-content" element={<CreateContentPage />} />
+              <Route path="/content/:type/:id" element={<SingleContentPage />} />
+              <Route path="/downloadbudgetexpense" element={<DownloadBudgetTemplate />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,21 +1,21 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import AddButton from './AddButton';
 import BurgerMenu from './BurgerMenu';
 import SettingsButton from './SettingsButton';
 import { NavBarContainer } from './Layout.styles';
+import AddButtonContentPage from './AddButtonContentPage';
 
-const NavigationBar = () => {
+const NavigationBar = ({ onAddButtonClick, onBurgerMenuClick }) => {
   const location = useLocation();
 
   const renderButton = () => {
     switch (location.pathname) {
-      case '/frame1':
+      case '/Budget':
       case '/frame2':
+      case '/Threads':
         return <SettingsButton />;
-      case '/frame3':
-      case '/frame4':
-        return <AddButton />;
+      case '/contentpage':
+        return <AddButtonContentPage onClick={onAddButtonClick} />;
       default:
         return null;
     }
@@ -23,7 +23,7 @@ const NavigationBar = () => {
 
   return (
     <NavBarContainer>
-      <BurgerMenu />
+      <BurgerMenu onClick={onBurgerMenuClick} />
       {renderButton()}
     </NavBarContainer>
   );

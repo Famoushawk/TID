@@ -1,8 +1,9 @@
-import React from 'react';
-import Parse from 'parse';
+import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ProfileBar from './ProfileBar';
 import NavigationBar from './NavigationBar';
+import BurgerMenu from './BurgerMenu';
+import { AuthService } from '../../api/services/AuthService';
 import {
   DashboardContainer,
   NavBar,
@@ -14,36 +15,40 @@ import {
 } from './Layout.styles';
 
 const DashboardLayout = () => {
+  const [isNavBarVisible, setIsNavBarVisible] = useState(true);
+  const [isNewThreadDialogOpen, setIsNewThreadDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await Parse.User.logOut();
-      localStorage.removeItem('sessionToken');
+      await AuthService.logout();
       navigate('/login');
     } catch (error) {
-      console.error('Error logging out:', error);
+      console.error('Logout failed:', error);
     }
   };
 
   return (
     <div>
-      <NavigationBar />
+      <NavigationBar onAddButtonClick={() => setIsNewThreadDialogOpen(true)}
+        onBurgerMenuClick={() => setIsNavBarVisible(!isNavBarVisible)} />
       <DashboardContainer>
-        <NavBar>
-          <NavContent>
-            <NavTitle>Dashboard</NavTitle>
-            <NavLinks>
-              <Link to="/frame1" component={StyledNavLink}>Frame 1</Link>
-              <Link to="/frame2" component={StyledNavLink}>Frame 2</Link>
-              <Link to="/frame3" component={StyledNavLink}>Frame 3</Link>
-              <Link to="/frame4" component={StyledNavLink}>Frame 4</Link>
-              <StyledNavLink as="button" onClick={handleLogout}>
-                Logout
-              </StyledNavLink>
-            </NavLinks>
-          </NavContent>
-        </NavBar>
+        {isNavBarVisible && (
+          <NavBar>
+            <NavContent>
+              <NavTitle>Dashboard</NavTitle>
+              <NavLinks>
+                <Link to="/Budget" component={StyledNavLink}>Budget</Link>
+                <Link to="/profilelist" component={StyledNavLink}>Profile List</Link>
+                <Link to="/contentpage" component={StyledNavLink}>Content</Link>
+                <Link to="/Threads" component={StyledNavLink}>Threads</Link>
+                <StyledNavLink as="button" onClick={handleLogout}>
+                  Logout
+                </StyledNavLink>
+              </NavLinks>
+            </NavContent>
+          </NavBar>
+        )}
         <ProfileBar />
         <MainContent>
           <Outlet />

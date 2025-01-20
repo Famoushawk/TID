@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProfileOptions = ({ title, details, description, imageUrl }) => {
+const ProfileOptions = ({ title, description, imageUrl }) => {
   return (
     <ListOptions>
       <StateLayer>

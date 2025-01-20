@@ -1,6 +1,7 @@
 import React from "react";
+import ProfileOptions from "../../components/layout/ProfileOptions.js";
 import styled from "styled-components";
-import ProfileOptions from "./ProfileOptions";
+
 
 
 const profileData = [

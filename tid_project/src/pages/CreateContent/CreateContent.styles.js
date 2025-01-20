@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SettingsContainer = styled.div`
+export const ContentPageContainer = styled.div`
   padding: ${({ theme }) => theme.spacing[2]};
   max-width: 42rem;
   margin: 0 auto;
@@ -12,28 +12,17 @@ export const PageTitle = styled.h1`
   margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
-export const MessageBox = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
-  padding: ${({ theme }) => theme.spacing[3]};
-  border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
-  background-color: ${({ type, theme }) =>
-    type === 'success' ? theme.colors.green100 : theme.colors.red100};
-  color: ${({ type, theme }) =>
-    type === 'success' ? theme.colors.green700 : theme.colors.red700};
-`;
-
-export const Card = styled.div`
+export const FormContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
   box-shadow: ${({ theme }) => theme.shadows.md};
   padding: ${({ theme }) => theme.spacing[6]};
-  margin-bottom: ${({ theme }) => theme.spacing[6]};
 `;
 
 export const SectionTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 600;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
+  margin-bottom: ${({ theme }) => theme.spacing[2]};
 `;
 
 export const FormGroup = styled.div`
@@ -48,6 +37,21 @@ export const Label = styled.label`
   display: block;
   color: ${({ theme }) => theme.colors.gray700};
   margin-bottom: ${({ theme }) => theme.spacing[2]};
+  
+  & > select {
+    margin-top: ${({ theme }) => theme.spacing[2]}; 
+    padding: ${({ theme }) => theme.spacing[2]};
+    width: 100%;
+    border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
+    border: 1px solid ${({ theme }) => theme.colors.gray300};
+    background-color: ${({ theme }) => theme.colors.white};
+    
+    &:focus {
+      outline: none;
+      border-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary}33;
+    }
+  }
 `;
 
 export const Input = styled.input`
@@ -55,7 +59,7 @@ export const Input = styled.input`
   padding: ${({ theme }) => theme.spacing[2]};
   border: 1px solid ${({ theme }) => theme.colors.gray300};
   border-radius: ${({ theme }) => theme.borderRadius.DEFAULT};
-  background-color: ${({ disabled, theme }) => 
+  background-color: ${({ disabled, theme }) =>
     disabled ? theme.colors.gray100 : theme.colors.white};
 
   &:focus {
@@ -65,10 +69,11 @@ export const Input = styled.input`
   }
 `;
 
-export const HelpText = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.gray500};
-  margin-top: ${({ theme }) => theme.spacing[1]};
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing[4]};
+  margin-top: ${({ theme }) => theme.spacing[6]};
 `;
 
 export const Button = styled.button`
@@ -85,49 +90,5 @@ export const Button = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-`;
-
-export const AvatarGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing[4]};
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
-`;
-
-export const AvatarOption = styled.div`
-  position: relative;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 4px;
-  border: 2px solid ${({ isSelected, theme }) => 
-    isSelected ? theme.colors.primary : 'transparent'};
-  transition: border-color 0.2s ease;
-
-  &:hover {
-    border-color: ${({ theme, isSelected }) => 
-      isSelected ? theme.colors.primary : theme.colors.gray300};
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    aspect-ratio: 1;
-    object-fit: cover;
-  }
-`;
-
-export const CurrentAvatar = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin-bottom: ${({ theme }) => theme.spacing[4]};
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 `;
